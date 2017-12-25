@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "wizRun\Android.csproj", "{C2238D47-A0AB-4FCC-9C53-E9D0296542E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "Android\Android.csproj", "{C2238D47-A0AB-4FCC-9C53-E9D0296542E3}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Universal", "Universal\Universal.shproj", "{2D668B88-6706-4FDD-B07A-F85DEC26D28F}"
 EndProject
