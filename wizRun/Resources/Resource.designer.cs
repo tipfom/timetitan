@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("wizRun.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Android.Resource", IsApplication=true)]
 
-namespace wizRun
+namespace Android
 {
 	
 	
@@ -41,34 +41,18 @@ namespace wizRun
 			}
 		}
 		
-		public partial class Layout
-		{
-			
-			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
-			
-			static Layout()
-			{
-				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
-			}
-			
-			private Layout()
-			{
-			}
-		}
-		
-		public partial class Mipmap
+		public partial class Drawable
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int icon = 2130837504;
 			
-			static Mipmap()
+			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
 			}
 			
-			private Mipmap()
+			private Drawable()
 			{
 			}
 		}
@@ -76,8 +60,8 @@ namespace wizRun
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040000
-			public const int app_name = 2130968576;
+			// aapt resource value: 0x7f030000
+			public const int app_name = 2130903040;
 			
 			static String()
 			{
@@ -85,6 +69,22 @@ namespace wizRun
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int thisTheme = 2130968576;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}

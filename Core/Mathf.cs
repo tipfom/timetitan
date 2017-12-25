@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace mapKnight.Core {
+namespace Core {
 
     public static class Mathf {
         public const float E = (float)Math.E;

@@ -6,7 +6,7 @@
     <ProjectGuid>{C2238D47-A0AB-4FCC-9C53-E9D0296542E3}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>wizRun</RootNamespace>
+    <RootNamespace>Android</RootNamespace>
     <AssemblyName>wizRun</AssemblyName>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
@@ -26,6 +26,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,35 +41,63 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="OpenTK-1.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="GLView1.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TouchHandler.cs" />
+    <Compile Include="View.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GettingStarted.Xamarin" />
-    <None Include="Resources\AboutResources.txt" />
+    <AndroidAsset Include="Assets\shader\fragment\color.frag" />
+    <AndroidAsset Include="Assets\shader\fragment\darken.frag" />
+    <AndroidAsset Include="Assets\shader\fragment\gauss.frag" />
+    <AndroidAsset Include="Assets\shader\fragment\line.frag" />
+    <AndroidAsset Include="Assets\shader\fragment\normal.frag" />
+    <AndroidAsset Include="Assets\shader\fragment\particle.frag" />
+    <AndroidAsset Include="Assets\shader\fragment\ui_abilityicon.frag" />
+    <AndroidAsset Include="Assets\shader\vertex\color.vert" />
+    <AndroidAsset Include="Assets\shader\vertex\line.vert" />
+    <AndroidAsset Include="Assets\shader\vertex\matrix.vert" />
+    <AndroidAsset Include="Assets\shader\vertex\normal.vert" />
+    <AndroidAsset Include="Assets\shader\vertex\particle.vert" />
+    <AndroidAsset Include="Assets\shader\vertex\ui_abilityicon.vert" />
+    <AndroidAsset Include="Assets\textures\interface.json" />
+    <None Include="packages.config" />
     <None Include="Properties\AndroidManifest.xml" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml" />
-    <AndroidResource Include="Resources\values\Strings.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\values\strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
+    <Folder Include="Resources\layout\" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\textures\interface.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values-v21\styles.xml" />
+  </ItemGroup>
+  <Import Project="..\Core\Core.projitems" Label="Shared" />
+  <Import Project="..\Universal\Universal.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

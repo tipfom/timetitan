@@ -3,9 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wizRun", "wizRun\wizRun.csproj", "{C2238D47-A0AB-4FCC-9C53-E9D0296542E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "wizRun\Android.csproj", "{C2238D47-A0AB-4FCC-9C53-E9D0296542E3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Universal", "Universal\Universal.shproj", "{2D668B88-6706-4FDD-B07A-F85DEC26D28F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Core", "Core\Core.shproj", "{BA6353FF-E08E-4585-9048-FD7ECE4838B7}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Content", "Content\Content.shproj", "{1550E43E-849D-48A9-ABBE-A510C63B7F50}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Content\Content.projitems*{1550e43e-849d-48a9-abbe-a510c63b7f50}*SharedItemsImports = 13
+		Universal\Universal.projitems*{2d668b88-6706-4fdd-b07a-f85dec26d28f}*SharedItemsImports = 13
+		Core\Core.projitems*{ba6353ff-e08e-4585-9048-fd7ece4838b7}*SharedItemsImports = 13
+		Core\Core.projitems*{c2238d47-a0ab-4fcc-9c53-e9d0296542e3}*SharedItemsImports = 4
+		Universal\Universal.projitems*{c2238d47-a0ab-4fcc-9c53-e9d0296542e3}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
