@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Android</RootNamespace>
     <AssemblyName>wizRun</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -76,6 +76,8 @@
     <AndroidAsset Include="Assets\shader\vertex\particle.vert" />
     <AndroidAsset Include="Assets\shader\vertex\ui_abilityicon.vert" />
     <AndroidAsset Include="Assets\textures\interface.json" />
+    <AndroidAsset Include="Assets\textures\player.json" />
+    <AndroidAsset Include="Assets\textures\plugger.json" />
     <None Include="packages.config" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
@@ -96,6 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values-v21\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\textures\player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\textures\plugger.png" />
   </ItemGroup>
   <Import Project="..\Core\Core.projitems" Label="Shared" />
   <Import Project="..\Universal\Universal.projitems" Label="Shared" />

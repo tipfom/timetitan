@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Programs\Program.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Programs\TextureProgram.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Programs\UIAbilityIconProgram.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\EntityRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\UIRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Window.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
@@ -42,7 +43,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Label.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Map.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Panel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\ProgressBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TargetArea.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Box.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RenderableElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Container.cs" />
@@ -50,8 +54,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\MarginType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\GameplayScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\MainMenuScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Touch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Element.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\Entity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\Mob.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\Player.cs" />
   </ItemGroup>
 </Project>

@@ -32,12 +32,11 @@ namespace Universal.UI.Layout {
         }
 
         public bool Collides (Vector2 point) {
-            return !(
-                point.X < Left ||
-                point.X > Right ||
-                point.Y > Top ||
-                point.Y < Bottom
-                );
+            return
+                point.X > Left &&
+                point.X < Right &&
+                point.Y < Top &&
+                point.Y > Bottom;
         }
 
         private void UpdateVerticies ( ) {

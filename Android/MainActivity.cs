@@ -7,7 +7,7 @@ namespace Android {
     [Activity(
         Label = "@string/app_name", 
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden, 
-        ScreenOrientation = ScreenOrientation.SensorLandscape, 
+        ScreenOrientation = ScreenOrientation.Portrait, 
         Theme = "@style/thisTheme",
         Icon = "@drawable/icon", 
         HardwareAccelerated = true,

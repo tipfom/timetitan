@@ -21,6 +21,7 @@ namespace Universal {
             //LightManager.Init( );
             UIRenderer.Init( );
             UIRenderer.Texture = Assets.GetSprite("interface");
+            EntityRenderer.Init( );
 
             Screen.MainMenu.Load( );
             Screen.Active = Screen.MainMenu;
