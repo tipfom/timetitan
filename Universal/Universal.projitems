@@ -38,7 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\EntityRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\UIRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Window.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Leaderboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ILeaderboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Time.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />

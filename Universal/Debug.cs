@@ -38,6 +38,12 @@ namespace Universal {
             Print(sender, message.ToString( ));
         }
 
+        public static void PopUp(string message) {
+#if __ANDROID__
+            global::Android.Widget.Toast.MakeText(Assets.Context, message, global::Android.Widget.ToastLength.Short).Show( );
+#endif
+        }
+
         public static void CheckGL (object sender) {
             CheckGL(sender.GetType( ));
         }

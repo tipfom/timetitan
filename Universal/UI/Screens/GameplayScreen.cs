@@ -67,7 +67,7 @@ namespace Universal.UI.Screens {
                     timeLeftBar.Value = 0;
                     finished = true;
                     targetArea.Stop( );
-                    Manager.lb.SubmitToLeaderboards(stage);
+                    Manager.Leaderboard.SubmitToLeaderboard(stage);
                 }
             }
 

@@ -41,7 +41,10 @@ namespace Android {
         }
 
         protected override void OnActivityResult (int requestCode, [GeneratedEnum] Result resultCode, Intent data) {
-            if (Manager.lb != null) Manager.lb.OnActivityResult(requestCode, resultCode, data);
+            if (Manager.Leaderboard != null) {
+                ((AndroidLeaderboard)Manager.Leaderboard).OnActivityResult(requestCode, resultCode, data);
+            }
+
             base.OnActivityResult(requestCode, resultCode, data);
         }
     }

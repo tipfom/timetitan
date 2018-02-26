@@ -9,7 +9,7 @@ using Universal.Graphics.Renderer;
 
 namespace Universal {
     public static class Manager {
-        public static AndroidLeaderboard lb;
+        public static ILeaderboard Leaderboard;
 
         public static void Initialize ( ) {
             ColorProgram.Init( );
@@ -28,7 +28,9 @@ namespace Universal {
             Screen.MainMenu.Load( );
             Screen.Active = Screen.MainMenu;
 
-            lb = new AndroidLeaderboard( );
+#if __ANDROID__
+            Leaderboard = new Android.AndroidLeaderboard((Android.App.Activity)Assets.Context);
+#endif
 
             Window.Background = new Color(25, 25, 50, 255);
         }
