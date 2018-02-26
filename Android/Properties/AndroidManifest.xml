@@ -1,6 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="wizRun.wizRun" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.tipfom.timetitan" android:installLocation="preferExternal">
 	<uses-feature android:glEsVersion="0x00020000" />
 	<uses-sdk android:minSdkVersion="16" />
-	<application android:label="wizRun" android:icon="@drawable/icon" android:hardwareAccelerated="true" android:allowBackup="true"></application>
+  
+  <!-- We need to be able to download map tiles and access Google Play Services-->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <!-- We need to be able to get access to the accounts on the device for Google Play Services-->
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+  <application android:label="timetitan" android:icon="@drawable/icon" android:hardwareAccelerated="true" android:allowBackup="true">
+    <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/app_id" />
+    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+  </application>
 </manifest>

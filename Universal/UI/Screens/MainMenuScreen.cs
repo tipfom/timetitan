@@ -14,6 +14,11 @@ namespace Universal.UI.Screens {
                 gameplayScreen.Load( );
                 Screen.Active = gameplayScreen;
             };
+
+            Button leaderboardButton = new Button(this, new Container(new Margin(.35f,.35f,0.5f, .2f), MarginType.Absolute, Position.Center | Position.Top, Position.Center), "LEADERBOARD");
+            leaderboardButton.Release += ( ) => {
+                Manager.lb.ShowLeaderboards( );
+            };
         }
     }
 }

@@ -39,6 +39,7 @@ namespace Universal.UI {
         }
 
         public virtual bool HandleTouch(Touch.Action action, Touch touch) {
+            if (!Visible) return false;
             switch (action) {
                 case Touch.Action.Begin:
                 case Touch.Action.Enter:

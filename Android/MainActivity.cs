@@ -1,6 +1,10 @@
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
+using Android.Gms.Common.Apis;
+using Android.Gms.Games;
 using Android.OS;
+using Android.Runtime;
 using Universal;
 
 namespace Android {
@@ -13,6 +17,8 @@ namespace Android {
         HardwareAccelerated = true,
         MainLauncher = true)]
     public class MainActivity : Activity {
+        public View View;
+
         protected override void OnCreate (Bundle bundle) {
             base.Window.DecorView.SystemUiVisibility = Constants.STATUS_BAR_VISIBILITY;
             base.Window.DecorView.SystemUiVisibilityChange += (sender, e) => {
@@ -24,14 +30,19 @@ namespace Android {
             // Create our OpenGL view, and display it
             Universal.Assets.Context = this;
 
-            View view = new View(this);
-            view.SetOnTouchListener(TouchHandler.Instance);
-            SetContentView(view);
+            View = new View(this);
+            View.SetOnTouchListener(TouchHandler.Instance);
+            SetContentView(View);
         }
 
         protected override void OnDestroy ( ) {
             Manager.Destroy( );
             base.OnDestroy( );
+        }
+
+        protected override void OnActivityResult (int requestCode, [GeneratedEnum] Result resultCode, Intent data) {
+            if (Manager.lb != null) Manager.lb.OnActivityResult(requestCode, resultCode, data);
+            base.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }

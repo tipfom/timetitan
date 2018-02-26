@@ -38,10 +38,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\EntityRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\UIRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Window.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Leaderboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Time.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Countdown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Label.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Map.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Panel.cs" />

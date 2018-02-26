@@ -29,7 +29,7 @@ namespace Universal.World {
                 float delta = deltaTime.TotalMilliseconds / DEATH_DELAY;
                 fadePercentage -= delta;
                 offset += delta;
-                Debug.Print(this, offset);
+                //Debug.Print(this, offset);
                 if (dyingEndTime < Environment.TickCount) {
                     dying = false;
                     deadCallback?.Invoke(this);

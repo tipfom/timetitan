@@ -9,6 +9,8 @@ using Universal.Graphics.Renderer;
 
 namespace Universal {
     public static class Manager {
+        public static AndroidLeaderboard lb;
+
         public static void Initialize ( ) {
             ColorProgram.Init( );
             MatrixProgram.Init( );
@@ -25,6 +27,8 @@ namespace Universal {
 
             Screen.MainMenu.Load( );
             Screen.Active = Screen.MainMenu;
+
+            lb = new AndroidLeaderboard( );
 
             Window.Background = new Color(25, 25, 50, 255);
         }
