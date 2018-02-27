@@ -12,5 +12,6 @@
 	<application android:label="Time Titan" android:icon="@drawable/icon" android:hardwareAccelerated="true" android:allowBackup="true">
 		<meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/app_id" />
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+    <meta-data android:name="android.max_ascept" android:value="2.1"/>
 	</application>
 </manifest>
