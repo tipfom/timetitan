@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.tipfom.timetitan" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2" android:versionName="1.1" package="com.tipfom.timetitan" android:installLocation="preferExternal">
 	<uses-feature android:glEsVersion="0x00020000" />
 	<uses-sdk android:minSdkVersion="16" />
 	<!-- We need to be able to download map tiles and access Google Play Services-->
@@ -12,6 +12,6 @@
 	<application android:label="Time Titan" android:icon="@drawable/icon" android:hardwareAccelerated="true" android:allowBackup="true">
 		<meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/app_id" />
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-    <meta-data android:name="android.max_ascept" android:value="2.1"/>
+		<meta-data android:name="android.max_ascept" android:value="2.1" />
 	</application>
 </manifest>
