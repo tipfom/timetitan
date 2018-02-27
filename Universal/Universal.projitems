@@ -45,8 +45,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Countdown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Label.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\LeaderboardButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Map.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Panel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\PlayButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\ProgressBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TargetArea.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Box.cs" />

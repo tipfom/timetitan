@@ -19,7 +19,12 @@
   "target": [ 18, 10, 20, 20 ],
 
   // misc
-  "blank" :  [ 363, 5, 1, 1 ],
+  "blank": [ 363, 5, 1, 1 ],
+
+  // buttons
+  "button_play": [ 62, 11, 14, 22 ],
+  "button_play_pressed": [ 77, 11, 14, 22 ],
+  "button_leaderboard": [ 39, 10, 19, 23 ],
 
   // chars
   "A": [ 0, 0, 7, 9 ],

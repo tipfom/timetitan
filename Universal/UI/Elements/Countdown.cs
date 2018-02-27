@@ -40,13 +40,13 @@ namespace Universal.UI.Elements {
         public override bool HandleTouch (Touch.Action action, Touch touch) {
             if (!Visible) return false;
 
-            if (timeLeft > 1) timeLeft -= .5f;
+            if (timeLeft > 1 && action == Touch.Action.End) timeLeft -= .5f;
 
             return true;
         }
 
         public override IEnumerable<RenderableElement> Draw ( ) {
-            return Label.GetRenderableElements(new string[ ] { timeLeft.ToString("0.0") }, Label.TextAlignment.Center, new Vector2(Container.X + Container.Width / 2f, Container.Y - Container.Height / 2f), charSize, Depth, Color.White);
+            return Label.GetRenderableElements(new string[ ] { timeLeft.ToString("0.0") }, Label.TextAlignment.Center, new Vector2(Container.X + Container.Width / 2f, Container.Y - Container.Height / 2f + charSize/2f), charSize, Depth, Color.White);
         }
     }
 }
