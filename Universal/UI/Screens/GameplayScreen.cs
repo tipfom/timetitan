@@ -32,11 +32,14 @@ namespace Universal.UI.Screens {
             player = new Player( );
 
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
-            timeLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.025f), MarginType.Relative), Depth.Foreground) { Max = maxTime, Value = maxTime };
-            hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.325f, 0.025f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
-            targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.65f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
-            stageLabel = new Label(this, new Container(new Margin(0.05f, 0.05f), MarginType.Relative), Depth.Foreground, 0.1f, "Stage: " + stage);
-            countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.65f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
+            stageLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute), Depth.Foreground, 0.1f, stage.ToString());
+
+            timeLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = maxTime, Value = maxTime, Color = new Color(255, 20, 20, 255) };
+            hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
+
+            targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
+
+            countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
             restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART", Depth.Foreground, Color.White) { Visible = false };
 
             countdown.Finished += ( ) => {
@@ -89,7 +92,7 @@ namespace Universal.UI.Screens {
             hitsLeftBar.Max = 10;
             hitsLeftBar.Value = 10;
             hitsLeftBar.Visible = true;
-            stageLabel.Text = "Stage: " + stage;
+            stageLabel.Text = stage.ToString( );
             restartButton.Visible = false;
             targetArea.Clear( );
 
@@ -129,7 +132,7 @@ namespace Universal.UI.Screens {
             maxTime = maxTime * 95 / 100;
             startTime = Environment.TickCount;
             stage++;
-            stageLabel.Text = "Stage: " + stage;
+            stageLabel.Text = stage.ToString( );
 
             timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;

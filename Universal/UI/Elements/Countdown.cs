@@ -46,7 +46,7 @@ namespace Universal.UI.Elements {
         }
 
         public override IEnumerable<RenderableElement> Draw ( ) {
-            return Label.GetRenderableElements(new string[ ] { timeLeft.ToString("0.0") }, Label.TextAlignment.Center, new Vector2(Container.X + Container.Width / 2f, Container.Y - Container.Height / 2f), charSize, Depth, Color.White);
+            return Label.GetRenderableElements(new string[ ] { timeLeft.ToString("0.0") }, Label.TextAlignment.Center, new Vector2(Container.X + Container.Width / 2f, Container.Y - Container.Height / 2f + charSize/2f), charSize, Depth, Color.White);
         }
     }
 }
