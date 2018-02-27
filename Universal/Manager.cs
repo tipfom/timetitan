@@ -32,13 +32,13 @@ namespace Universal {
             Leaderboard = new Android.AndroidLeaderboard((Android.App.Activity)Assets.Context);
 #endif
 
-            Window.Background = new Color(25, 25, 50, 255);
+            Window.Background = new Color(225, 225, 225, 255);
         }
 
         public static void Update ( ) {
             Time.Update( );
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            
+
             Screen.Active.Update(Time.FrameTime);
 #if DEBUG
             Time.UpdateFinished( );
@@ -47,8 +47,8 @@ namespace Universal {
             Screen.Active.Draw( );
 
 #if DEBUG
-            Time.DrawFinished( );       
-#endif 
+            Time.DrawFinished( );
+#endif
         }
 
         public static void Destroy ( ) {

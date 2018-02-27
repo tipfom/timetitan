@@ -40,7 +40,7 @@ namespace Universal.UI.Elements {
         public override bool HandleTouch (Touch.Action action, Touch touch) {
             if (!Visible) return false;
 
-            if (timeLeft > 1) timeLeft -= .5f;
+            if (timeLeft > 1 && action == Touch.Action.End) timeLeft -= .5f;
 
             return true;
         }

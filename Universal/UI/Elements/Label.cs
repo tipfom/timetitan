@@ -8,8 +8,7 @@ namespace Universal.UI.Elements {
     public class Label : Element {
         public const int CHAR_WIDTH_PIXEL = 7;
         public const int CHAR_HEIGHT_PIXEL = 9;
-        public const int CHAR_SPACING_PIXEL = 1;
-
+        public const float CHAR_SPACING_MULTIPLIER = 21f / 20f;
         private static Dictionary<char, float> charScales = new Dictionary<char, float>( ) { [' '] = 1f };
 
         static Label ( ) {
@@ -95,7 +94,7 @@ namespace Universal.UI.Elements {
                                     character.ToString( ),
                                     depth,
                                     color);
-                                currentPosition.X += characterWidth;
+                                currentPosition.X += characterWidth * CHAR_SPACING_MULTIPLIER;
                             }
                         }
                         currentPosition.X = position.X;
@@ -119,7 +118,7 @@ namespace Universal.UI.Elements {
                                     character.ToString( ),
                                     depth,
                                     color);
-                                currentPosition.X -= characterWidth;
+                                currentPosition.X -= characterWidth * CHAR_SPACING_MULTIPLIER;
                             }
                         }
                         currentPosition.Y -= charSize;
@@ -144,7 +143,7 @@ namespace Universal.UI.Elements {
                                     character.ToString( ),
                                     depth,
                                     color);
-                                currentPosition.X += characterWidth;
+                                currentPosition.X += characterWidth * CHAR_SPACING_MULTIPLIER;
                             }
                         }
                         currentPosition.Y -= charSize;
@@ -158,7 +157,7 @@ namespace Universal.UI.Elements {
             for (int i = 0; i < lineSizes.Length; i++) {
                 lineSizes[i].Y = charSize;
                 foreach (char character in lines[i].ToUpper( )) {
-                    lineSizes[i].X += charScales[character] * charSize;
+                    lineSizes[i].X += charScales[character] * charSize * CHAR_SPACING_MULTIPLIER;
                 }
             }
             return lineSizes;
