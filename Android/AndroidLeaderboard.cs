@@ -15,6 +15,8 @@ namespace Android {
     public class AndroidLeaderboard : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener, Universal.ILeaderboard {
         private const int REQUEST_CODE_RESOLVE = 9001;
         private const int REQUEST_CODE_LEADERBOARD = 9002;
+        private const string SETTINGS_NAME = "googleplay";
+        private const string SETTINGS_STRING_ACCOUNTNAME = "id";
 
         private Activity activity;
 
@@ -24,15 +26,24 @@ namespace Android {
         public AndroidLeaderboard (Activity activity) {
             this.activity = activity;
 
+            ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private);
+            string accountName = settings.GetString(SETTINGS_STRING_ACCOUNTNAME, string.Empty);
+
             GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity, this, this);
             builder.AddApi(GamesClass.API);
             builder.AddScope(GamesClass.ScopeGames);
-            // für anmeldung beim nächsten starten: builder.SetAccountName( );
+            if (!string.IsNullOrEmpty(accountName)) builder.SetAccountName(accountName);
             googleApiClient = builder.Build( );
             googleApiClient.Connect( );
         }
 
         public void OnConnected (Bundle connectionHint) {
+            using (ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private)) {
+                using (ISharedPreferencesEditor editor = settings.Edit( )) {
+                    editor.PutString(SETTINGS_STRING_ACCOUNTNAME, GamesClass.GetCurrentAccountName(googleApiClient));
+                    editor.Commit( );
+                }
+            }
         }
 
         public void OnConnectionFailed (ConnectionResult result) {
@@ -63,7 +74,7 @@ namespace Android {
         }
 
         public void ShowLeaderboard ( ) {
-            if(googleApiClient != null && googleApiClient.IsConnected) {
+            if (googleApiClient != null && googleApiClient.IsConnected) {
                 var intent = GamesClass.Leaderboards.GetLeaderboardIntent(googleApiClient, "CgkI3dz0sMcMEAIQAQ");
                 activity.StartActivityForResult(intent, REQUEST_CODE_LEADERBOARD);
             } else {
