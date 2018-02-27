@@ -11,7 +11,6 @@ namespace Universal.UI.Elements {
         private static readonly Color INACTIVE_COLOR = new Color(144, 144, 144, 64);
         private static readonly Color FAILED_COLOR = new Color(204, 0, 0, 255);
 
-
         private Action<int> hitCallback;
         private int targetsLeft;
 
@@ -20,6 +19,12 @@ namespace Universal.UI.Elements {
         private Stack<Box> oldTargets = new Stack<Box>(10);
 
         public TargetArea (Screen owner, Container container, int depth) : base(owner, container, depth, false) {
+        }
+
+        public void Clear ( ) {
+            oldTargets.Clear( );
+            targetBox = null;
+            IsDirty = true;
         }
 
         public void Challenge (int targetCount, float relativeTargetSize, Action<int> targetHitCallback) {
