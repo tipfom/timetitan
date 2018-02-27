@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace mapKnight.Core {
+namespace Core {
 
     public static class Extensions {
         private static readonly CompressionLevel defaultCompression;

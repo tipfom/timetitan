@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace mapKnight.Core {
+namespace Core {
     public static class Mathi {
         private static int x, y, z, w;
 

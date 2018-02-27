@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace mapKnight.Core {
+namespace Core {
     public struct Size {
         public static Size operator - (Size size) {
             return new Size (-size.Width, -size.Height);

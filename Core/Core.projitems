@@ -9,5 +9,17 @@
     <Import_RootNamespace>Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Color.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeltaTime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\InterpolationMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Spritebatch2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Texture2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\RenderableObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interpolation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mathf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mathi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Size.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Vector2.cs" />
   </ItemGroup>
 </Project>

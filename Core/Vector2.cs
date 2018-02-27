@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace mapKnight.Core {
+namespace Core {
     public struct Vector2 {
         #region operator
 
@@ -101,11 +101,6 @@ namespace mapKnight.Core {
         public Vector2 (Vector2 vector) {
             X = vector.X;
             Y = vector.Y;
-        }
-
-        public Vector2 (Range<Vector2> velocity) : this( ) {
-            X = Mathf.Random(velocity.Min.X, velocity.Max.X);
-            Y = Mathf.Random(velocity.Min.Y, velocity.Max.Y);
         }
 
         #region methods and functions
