@@ -110,7 +110,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Start ( ) {
-            targetArea.Challenge(10, 0.2f, ChallengeProgressCallback);
+            targetArea.Challenge(7, 2, 0.22f, ChallengeProgressCallback);
             startTime = Environment.TickCount;
             finished = false;
         }
@@ -137,7 +137,7 @@ namespace Universal.UI.Screens {
 
         private void Next ( ) {
             mobs.Insert(0, new Mob(Entity.PLUGGER));
-            targetArea.Challenge(10, 0.2f, ChallengeProgressCallback);
+            targetArea.Challenge(7, 2, 0.22f, ChallengeProgressCallback);
             hitsLeftBar.Value = 10;
             maxTime = maxTime * 95 / 100;
             startTime = Environment.TickCount;
