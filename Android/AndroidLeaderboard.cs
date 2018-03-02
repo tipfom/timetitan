@@ -49,22 +49,26 @@ namespace Android {
         public AndroidLeaderboard (Activity activity) {
             this.activity = activity;
 
-            string accountName;
-            using (ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private)) {
-                accountName = settings.GetString(SETTINGS_STRING_ACCOUNTNAME, string.Empty);
+
+            GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.Instance;
+            if (googleApiAvailability.IsGooglePlayServicesAvailable(activity) == ConnectionResult.Success) {
+                string accountName;
+                using (ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private)) {
+                    accountName = settings.GetString(SETTINGS_STRING_ACCOUNTNAME, string.Empty);
+                }
+
+                GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity, this, this);
+                builder.AddApi(GamesClass.API);
+                builder.AddScope(GamesClass.ScopeGames);
+                if (!string.IsNullOrEmpty(accountName)) builder.SetAccountName(accountName);
+                googleApiClient = builder.Build( );
+
+                using (ISharedPreferences settings = activity.GetSharedPreferences(LOCAL_LEADERBOARD_NAME, FileCreationMode.Private)) {
+                    Highscore = settings.GetInt(LOCAL_LEADERBOARD_HIGHSCORE, 0);
+                }
+
+                googleApiClient.Connect( );
             }
-
-            GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity, this, this);
-            builder.AddApi(GamesClass.API);
-            builder.AddScope(GamesClass.ScopeGames);
-            if (!string.IsNullOrEmpty(accountName)) builder.SetAccountName(accountName);
-            googleApiClient = builder.Build( );
-
-            using (ISharedPreferences settings = activity.GetSharedPreferences(LOCAL_LEADERBOARD_NAME, FileCreationMode.Private)) {
-                Highscore = settings.GetInt(LOCAL_LEADERBOARD_HIGHSCORE, 0);
-            }
-
-            googleApiClient.Connect( );
         }
 
         public void OnConnected (Bundle connectionHint) {
@@ -101,8 +105,6 @@ namespace Android {
             Highscore = score;
             if (googleApiClient != null && googleApiClient.IsConnected) {
                 GamesClass.Leaderboards.SubmitScore(googleApiClient, "CgkI3dz0sMcMEAIQAQ", score);
-            } else {
-                global::Android.Widget.Toast.MakeText(activity, "leaderboard failed :(. im sorry might fix it later", global::Android.Widget.ToastLength.Short).Show( );
             }
         }
 
@@ -110,8 +112,6 @@ namespace Android {
             if (googleApiClient != null && googleApiClient.IsConnected) {
                 var intent = GamesClass.Leaderboards.GetLeaderboardIntent(googleApiClient, "CgkI3dz0sMcMEAIQAQ");
                 activity.StartActivityForResult(intent, REQUEST_CODE_LEADERBOARD);
-            } else {
-                global::Android.Widget.Toast.MakeText(activity, "leaderboard failed :(. im sorry might fix it later", global::Android.Widget.ToastLength.Short).Show( );
             }
         }
 
