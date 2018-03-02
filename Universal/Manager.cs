@@ -25,12 +25,12 @@ namespace Universal {
             UIRenderer.Texture = Assets.GetSprite("interface");
             EntityRenderer.Init( );
 
-            Screen.MainMenu.Load( );
-            Screen.Active = Screen.MainMenu;
-
 #if __ANDROID__
             Leaderboard = new Android.AndroidLeaderboard((Android.App.Activity)Assets.Context);
 #endif
+
+            Screen.MainMenu.Load( );
+            Screen.Active = Screen.MainMenu;
 
             Window.Background = new Color(225, 225, 225, 255);
         }

@@ -17,11 +17,11 @@ namespace Universal.UI.Screens {
         private TargetArea targetArea;
         private ProgressBar timeLeftBar;
         private ProgressBar hitsLeftBar;
-        private Label stageLabel;
+        private Label scoreLabel;
         private Countdown countdown;
         private Button restartButton;
 
-        private int stage = 0;
+        private int score = 0;
         private int maxTime = 10000;
         private int startTime = 0;
         private bool finished = true;
@@ -32,7 +32,13 @@ namespace Universal.UI.Screens {
             player = new Player( );
 
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
-            stageLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute), Depth.Foreground, 0.1f, stage.ToString());
+            scoreLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute), Depth.Foreground, 0.1f, score.ToString( ));
+
+            Label highscoreLabel = new Label(this, new Container(new Margin(0.025f, 0f), MarginType.Absolute, dock: Position.Right | Position.Top, relative: scoreLabel), Depth.Foreground, 0.05f, new Color(255, 255, 255, 127), Manager.Leaderboard.Highscore.ToString( ), Label.TextAlignment.Right);
+            Manager.Leaderboard.HighscoreChanged += (newHighscore) => {
+                highscoreLabel.Text = newHighscore.ToString( );
+            };
+
 
             timeLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = maxTime, Value = maxTime, Color = new Color(255, 20, 20, 255) };
             hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
@@ -84,7 +90,7 @@ namespace Universal.UI.Screens {
 
         private void Prepare ( ) {
             maxTime = 10000;
-            stage = 0;
+            score = 0;
 
             timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;
@@ -92,7 +98,7 @@ namespace Universal.UI.Screens {
             hitsLeftBar.Max = 10;
             hitsLeftBar.Value = 10;
             hitsLeftBar.Visible = true;
-            stageLabel.Text = stage.ToString( );
+            scoreLabel.Text = score.ToString( );
             restartButton.Visible = false;
             targetArea.Clear( );
 
@@ -109,7 +115,7 @@ namespace Universal.UI.Screens {
         private void Finished ( ) {
             finished = true;
             targetArea.Stop( );
-            Manager.Leaderboard.SubmitToLeaderboard(stage);
+            Manager.Leaderboard.SubmitToLeaderboard(score);
 
             restartButton.Visible = true;
             timeLeftBar.Visible = false;
@@ -131,8 +137,8 @@ namespace Universal.UI.Screens {
             hitsLeftBar.Value = 10;
             maxTime = maxTime * 95 / 100;
             startTime = Environment.TickCount;
-            stage++;
-            stageLabel.Text = stage.ToString( );
+            score++;
+            scoreLabel.Text = score.ToString( );
 
             timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;
