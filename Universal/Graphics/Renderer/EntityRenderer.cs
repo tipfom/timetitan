@@ -29,7 +29,7 @@ namespace Universal.Graphics.Renderer {
             colorBuffer = new ClientBuffer(4, MAX_VERTEX_COUNT, PrimitiveType.Quad);
             buffer = new BufferBatch(new IndexBuffer(MAX_VERTEX_COUNT), vertexBuffer, colorBuffer, textureBuffer);
 
-            entityTextures[Entity.PLAYER] = Assets.GetSprite("player");
+            entityTextures[Entity.PLAYER] = Assets.GetSprite("player/default");
             entityTextures[Entity.PLUGGER] = Assets.GetSprite("plugger");
         }
 

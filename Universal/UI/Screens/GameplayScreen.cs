@@ -128,6 +128,7 @@ namespace Universal.UI.Screens {
 
         private void ChallengeProgressCallback (int targetsLeft) {
             hitsLeftBar.Value = targetsLeft;
+            player.Attack( );
             if (targetsLeft == 0 && !finished) {
                 mobs[0].Die(null);
 
