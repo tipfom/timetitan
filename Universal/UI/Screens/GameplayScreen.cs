@@ -10,6 +10,8 @@ using Universal.World;
 
 namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
+        public const int START_TIME = 10000;
+
         private Player player;
         private List<Mob> mobs = new List<Mob>( );
 
@@ -23,7 +25,7 @@ namespace Universal.UI.Screens {
         private LeaderboardButton leaderboardButton;
 
         private int score = 0;
-        private int maxTime = 10000;
+        private int maxTime = START_TIME;
         private int startTime = 0;
         private bool finished = true;
 
@@ -91,7 +93,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Prepare ( ) {
-            maxTime = 10000;
+            maxTime = START_TIME;
             score = 0;
 
             timeLeftBar.Max = maxTime;
@@ -110,7 +112,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Start ( ) {
-            targetArea.Challenge(7, 2, 0.22f, ChallengeProgressCallback);
+            Challenge( );
             startTime = Environment.TickCount;
             finished = false;
         }
@@ -138,15 +140,30 @@ namespace Universal.UI.Screens {
 
         private void Next ( ) {
             mobs.Insert(0, new Mob(Entity.PLUGGER));
-            targetArea.Challenge(7, 2, 0.22f, ChallengeProgressCallback);
             hitsLeftBar.Value = 10;
-            maxTime = maxTime * 95 / 100;
+            maxTime = (int)(START_TIME * Mathf.Pow(0.98f, score));
             startTime = Environment.TickCount;
             score++;
             scoreLabel.Text = score.ToString( );
 
             timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;
+
+            Challenge( );
+        }
+
+        private void Challenge ( ) {
+            if (score < 10) {
+                targetArea.Challenge(7, 0, 0.22f, ChallengeProgressCallback);
+            } else if (score < 20) {
+                targetArea.Challenge(7, 1, 0.21f, ChallengeProgressCallback);
+            } else if (score < 30) {
+                targetArea.Challenge(7, 2, 0.20f, ChallengeProgressCallback);
+            } else if (score < 40) {
+                targetArea.Challenge(8, 2, 0.19f, ChallengeProgressCallback);
+            } else {
+                targetArea.Challenge(8, 3, 0.19f, ChallengeProgressCallback);
+            }
         }
     }
 }
