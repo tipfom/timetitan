@@ -25,9 +25,6 @@ namespace Universal.UI.Screens {
             };
 
             LeaderboardButton leaderboardButton = new LeaderboardButton(this, new Container(new Margin(0.05f, .2f, .2f * 23f / 19f, 0.05f), MarginType.Absolute, Position.Bottom | Position.Left, Position.Bottom | Position.Left), Depth.Foreground);
-            leaderboardButton.Release += ( ) => {
-                Manager.Leaderboard.ShowLeaderboard( );
-            };
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Universal.UI.Screens {
         private Label scoreLabel;
         private Countdown countdown;
         private Button restartButton;
+        private LeaderboardButton leaderboardButton;
 
         private int score = 0;
         private int maxTime = 10000;
@@ -47,6 +48,7 @@ namespace Universal.UI.Screens {
 
             countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
             restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART", Depth.Foreground, Color.White) { Visible = false };
+            leaderboardButton = new LeaderboardButton(this, new Container(new Margin(0.15f, 0.05f, 0.15f * 23f / 19f, 0.05f), MarginType.Absolute, Position.Right | Position.Bottom, Position.Right | Position.Bottom), Depth.Foreground) { Visible = false };
 
             countdown.Finished += ( ) => {
                 Start( );
@@ -100,6 +102,7 @@ namespace Universal.UI.Screens {
             hitsLeftBar.Visible = true;
             scoreLabel.Text = score.ToString( );
             restartButton.Visible = false;
+            leaderboardButton.Visible = false;
             targetArea.Clear( );
 
             mobs.Clear( );
@@ -120,6 +123,7 @@ namespace Universal.UI.Screens {
             restartButton.Visible = true;
             timeLeftBar.Visible = false;
             hitsLeftBar.Visible = false;
+            leaderboardButton.Visible = true;
         }
 
         private void ChallengeProgressCallback (int targetsLeft) {
