@@ -62,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Screens\MainMenuScreen.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Touch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Element.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\ChallengeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Mob.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Player.cs" />

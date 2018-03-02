@@ -10,6 +10,8 @@ using Universal.World;
 
 namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
+        public const int START_TIME = 10000;
+
         private Player player;
         private List<Mob> mobs = new List<Mob>( );
 
@@ -17,12 +19,13 @@ namespace Universal.UI.Screens {
         private TargetArea targetArea;
         private ProgressBar timeLeftBar;
         private ProgressBar hitsLeftBar;
-        private Label stageLabel;
+        private Label scoreLabel;
         private Countdown countdown;
         private Button restartButton;
+        private LeaderboardButton leaderboardButton;
 
-        private int stage = 0;
-        private int maxTime = 10000;
+        private int score = 0;
+        private int maxTime = START_TIME;
         private int startTime = 0;
         private bool finished = true;
 
@@ -32,7 +35,13 @@ namespace Universal.UI.Screens {
             player = new Player( );
 
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
-            stageLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute), Depth.Foreground, 0.1f, stage.ToString());
+            scoreLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute), Depth.Foreground, 0.1f, score.ToString( ));
+
+            Label highscoreLabel = new Label(this, new Container(new Margin(0.025f, 0f), MarginType.Absolute, dock: Position.Right | Position.Top, relative: scoreLabel), Depth.Foreground, 0.05f, new Color(255, 255, 255, 127), Manager.Leaderboard.Highscore.ToString( ), Label.TextAlignment.Right);
+            Manager.Leaderboard.HighscoreChanged += (newHighscore) => {
+                highscoreLabel.Text = newHighscore.ToString( );
+            };
+
 
             timeLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = maxTime, Value = maxTime, Color = new Color(255, 20, 20, 255) };
             hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
@@ -41,6 +50,7 @@ namespace Universal.UI.Screens {
 
             countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
             restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART", Depth.Foreground, Color.White) { Visible = false };
+            leaderboardButton = new LeaderboardButton(this, new Container(new Margin(0.15f, 0.05f, 0.15f * 23f / 19f, 0.05f), MarginType.Absolute, Position.Right | Position.Bottom, Position.Right | Position.Bottom), Depth.Foreground) { Visible = false };
 
             countdown.Finished += ( ) => {
                 Start( );
@@ -83,8 +93,8 @@ namespace Universal.UI.Screens {
         }
 
         private void Prepare ( ) {
-            maxTime = 10000;
-            stage = 0;
+            maxTime = START_TIME;
+            score = 0;
 
             timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;
@@ -92,8 +102,9 @@ namespace Universal.UI.Screens {
             hitsLeftBar.Max = 10;
             hitsLeftBar.Value = 10;
             hitsLeftBar.Visible = true;
-            stageLabel.Text = stage.ToString( );
+            scoreLabel.Text = score.ToString( );
             restartButton.Visible = false;
+            leaderboardButton.Visible = false;
             targetArea.Clear( );
 
             mobs.Clear( );
@@ -101,7 +112,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Start ( ) {
-            targetArea.Challenge(10, 0.2f, ChallengeProgressCallback);
+            Challenge( );
             startTime = Environment.TickCount;
             finished = false;
         }
@@ -109,15 +120,17 @@ namespace Universal.UI.Screens {
         private void Finished ( ) {
             finished = true;
             targetArea.Stop( );
-            Manager.Leaderboard.SubmitToLeaderboard(stage);
+            Manager.Leaderboard.SubmitToLeaderboard(score);
 
             restartButton.Visible = true;
             timeLeftBar.Visible = false;
             hitsLeftBar.Visible = false;
+            leaderboardButton.Visible = true;
         }
 
         private void ChallengeProgressCallback (int targetsLeft) {
             hitsLeftBar.Value = targetsLeft;
+            player.Attack( );
             if (targetsLeft == 0 && !finished) {
                 mobs[0].Die(null);
 
@@ -127,15 +140,30 @@ namespace Universal.UI.Screens {
 
         private void Next ( ) {
             mobs.Insert(0, new Mob(Entity.PLUGGER));
-            targetArea.Challenge(10, 0.2f, ChallengeProgressCallback);
             hitsLeftBar.Value = 10;
-            maxTime = maxTime * 95 / 100;
+            maxTime = (int)(START_TIME * Mathf.Pow(0.98f, score));
             startTime = Environment.TickCount;
-            stage++;
-            stageLabel.Text = stage.ToString( );
+            score++;
+            scoreLabel.Text = score.ToString( );
 
             timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;
+
+            Challenge( );
+        }
+
+        private void Challenge ( ) {
+            if (score < 10) {
+                targetArea.Challenge(7, 0, 0.22f, ChallengeProgressCallback);
+            } else if (score < 20) {
+                targetArea.Challenge(7, 1, 0.21f, ChallengeProgressCallback);
+            } else if (score < 30) {
+                targetArea.Challenge(7, 2, 0.20f, ChallengeProgressCallback);
+            } else if (score < 40) {
+                targetArea.Challenge(8, 2, 0.19f, ChallengeProgressCallback);
+            } else {
+                targetArea.Challenge(8, 3, 0.19f, ChallengeProgressCallback);
+            }
         }
     }
 }

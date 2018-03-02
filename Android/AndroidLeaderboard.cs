@@ -10,6 +10,7 @@ using Android.Gms.Games;
 using Android.Gms.Games.LeaderBoard;
 using Android.OS;
 using Android.Views;
+using Java.Lang;
 
 namespace Android {
     public class AndroidLeaderboard : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener, Universal.ILeaderboard {
@@ -17,23 +18,52 @@ namespace Android {
         private const int REQUEST_CODE_LEADERBOARD = 9002;
         private const string SETTINGS_NAME = "googleplay";
         private const string SETTINGS_STRING_ACCOUNTNAME = "id";
+        private const string LEADERBOARD_ID = "CgkI3dz0sMcMEAIQAQ";
+        private const string LOCAL_LEADERBOARD_NAME = "localleaderboard";
+        private const string LOCAL_LEADERBOARD_HIGHSCORE = "highscore";
 
         private Activity activity;
 
         private GoogleApiClient googleApiClient;
         private bool currentlyResolvingConnection = false;
 
+        public event Action<int> HighscoreChanged;
+
+        private int _Highscore = -1;
+        public int Highscore {
+            get { return _Highscore; }
+            private set {
+                if (value > _Highscore) {
+                    _Highscore = value;
+                    using (ISharedPreferences settings = activity.GetSharedPreferences(LOCAL_LEADERBOARD_NAME, FileCreationMode.Private)) {
+                        using (ISharedPreferencesEditor editor = settings.Edit( )) {
+                            editor.PutInt(LOCAL_LEADERBOARD_HIGHSCORE, value);
+                            editor.Commit( );
+                        }
+                    }
+                    HighscoreChanged?.Invoke(value);
+                }
+            }
+        }
+
         public AndroidLeaderboard (Activity activity) {
             this.activity = activity;
 
-            ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private);
-            string accountName = settings.GetString(SETTINGS_STRING_ACCOUNTNAME, string.Empty);
+            string accountName;
+            using (ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private)) {
+                accountName = settings.GetString(SETTINGS_STRING_ACCOUNTNAME, string.Empty);
+            }
 
             GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity, this, this);
             builder.AddApi(GamesClass.API);
             builder.AddScope(GamesClass.ScopeGames);
             if (!string.IsNullOrEmpty(accountName)) builder.SetAccountName(accountName);
             googleApiClient = builder.Build( );
+
+            using (ISharedPreferences settings = activity.GetSharedPreferences(LOCAL_LEADERBOARD_NAME, FileCreationMode.Private)) {
+                Highscore = settings.GetInt(LOCAL_LEADERBOARD_HIGHSCORE, 0);
+            }
+
             googleApiClient.Connect( );
         }
 
@@ -44,6 +74,8 @@ namespace Android {
                     editor.Commit( );
                 }
             }
+
+            GetHighscoreFromGoogle( );
         }
 
         public void OnConnectionFailed (ConnectionResult result) {
@@ -66,6 +98,7 @@ namespace Android {
         }
 
         public void SubmitToLeaderboard (int score) {
+            Highscore = score;
             if (googleApiClient != null && googleApiClient.IsConnected) {
                 GamesClass.Leaderboards.SubmitScore(googleApiClient, "CgkI3dz0sMcMEAIQAQ", score);
             } else {
@@ -79,6 +112,21 @@ namespace Android {
                 activity.StartActivityForResult(intent, REQUEST_CODE_LEADERBOARD);
             } else {
                 global::Android.Widget.Toast.MakeText(activity, "leaderboard failed :(. im sorry might fix it later", global::Android.Widget.ToastLength.Short).Show( );
+            }
+        }
+
+        private void GetHighscoreFromGoogle ( ) {
+            GamesClass.Leaderboards.LoadCurrentPlayerLeaderboardScore(googleApiClient, LEADERBOARD_ID, LeaderboardVariant.TimeSpanAllTime, LeaderboardVariant.CollectionPublic).SetResultCallback<ILeaderboardsLoadPlayerScoreResult>(GetHighscoreCallback);
+        }
+
+        private void GetHighscoreCallback (ILeaderboardsLoadPlayerScoreResult result) {
+            if (result.Status.StatusCode == GamesStatusCodes.StatusOk) {
+                int loadedHighscore = (int)result.Score.RawScore;
+                if (Highscore > loadedHighscore) {
+                    SubmitToLeaderboard(Highscore);
+                } else {
+                    Highscore = loadedHighscore;
+                }
             }
         }
     }
