@@ -10,7 +10,7 @@ namespace Universal.UI.Elements {
     public class TargetArea : Element {
         private static readonly Color ACTIVE_SINGLETAP_COLOR = new Color(0, 204, 0, 255);
         private static readonly Color ACTIVE_DOUBLETAP_COLOR = new Color(204, 204, 0, 255);
-        private static readonly Color[ ] INACTIVE_COLOR = new[ ] { new Color(144, 144, 144, 128), new Color(144, 144, 144, 32) };
+        private static readonly Color[ ] PREVIEW_COLOR = new[ ] { new Color(144, 144, 144, 128), new Color(144, 144, 144, 32) };
         private static readonly Color FAILED_COLOR = new Color(204, 0, 0, 255);
 
         private Action<int> hitCallback;
@@ -53,19 +53,22 @@ namespace Universal.UI.Elements {
 
         public override IEnumerable<RenderableElement> Draw ( ) {
             for (int i = 1; i < challenges.Count && i < 3; i++) {
-                yield return new RenderableElement(challenges[i].Box.Verticies, "target", Depth, INACTIVE_COLOR[i - 1]);
+                yield return GetRenderableElement(challenges[0], i-1);
             }
 
             if (challenges.Count > 0) {
-                switch (challenges[0].Type) {
-                    case ChallengeType.SingleTap:
-                        yield return new RenderableElement(challenges[0].Box.Verticies, "target", Depth, active ? ACTIVE_SINGLETAP_COLOR : FAILED_COLOR);
-                        break;
-                    case ChallengeType.DoubleTap:
-                        yield return new RenderableElement(challenges[0].Box.Verticies, "target", Depth, active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR);
-                        break;
-                }
+                yield return GetRenderableElement(challenges[0]);
             }
+        }
+
+        private RenderableElement GetRenderableElement (TapChallenge challenge, int previewIndex = -1) {
+            switch (challenge.Type) {
+                case ChallengeType.SingleTap:
+                    return new RenderableElement(challenges[0].Box.Verticies, "singletap", Depth, (previewIndex > 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_SINGLETAP_COLOR : FAILED_COLOR));
+                case ChallengeType.DoubleTap:
+                    return new RenderableElement(challenges[0].Box.Verticies, "doubletap", Depth, (previewIndex > 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
+            }
+            return null;
         }
 
         private void GenerateChallenges (int singleTapChallengeCount, int doubleTapChallengeCount, float relativeTargetSize) {
@@ -127,7 +130,7 @@ namespace Universal.UI.Elements {
                 Vector2 bigSize = smallSize * BIG_SIZE_FACTOR;
                 Vector2 position = new Vector2(Mathf.Random(bigSize.X / 2f, containerSize.X - bigSize.X / 2f), -Mathf.Random(bigSize.Y / 2f, containerSize.Y - bigSize.Y / 2f));
                 bigBox = new Box(containerLocation + position + new Vector2(-bigSize.X / 2f, bigSize.Y / 2f), bigSize);
-                smallBox = new Box(containerLocation + position + new Vector2(-smallSize.X/2f, smallSize.Y/2f), smallSize);
+                smallBox = new Box(containerLocation + position + new Vector2(-smallSize.X / 2f, smallSize.Y / 2f), smallSize);
             }
 
             public override bool IsCompleted (Touch.Action action, Touch touch) {
