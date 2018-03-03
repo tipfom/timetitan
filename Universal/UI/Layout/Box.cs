@@ -39,6 +39,14 @@ namespace Universal.UI.Layout {
                 point.Y > Bottom;
         }
 
+        public bool Collides (Box box) {
+            return !(
+                box.Right <= Left || 
+                box.Left >= Right || 
+                box.Bottom >= Top ||
+                box.Top <= Bottom);
+        }
+
         private void UpdateVerticies ( ) {
             Verticies[0] = Left;
             Verticies[1] = Top;
@@ -50,16 +58,16 @@ namespace Universal.UI.Layout {
             Verticies[7] = Top;
         }
 
-        public static float[] GetVerticies(float x, float y, float width, float height) {
+        public static float[ ] GetVerticies (float x, float y, float width, float height) {
             return new float[8] {
                 x, y,
-                x, y - height, 
-                x + width, y - height, 
+                x, y - height,
+                x + width, y - height,
                 x + width, y
             };
         }
 
-        public static float[] GetVerticies(Vector2 position, Vector2 size) {
+        public static float[ ] GetVerticies (Vector2 position, Vector2 size) {
             return new float[8] {
                 position.X, position.Y,
                 position.X, position.Y - size.Y,

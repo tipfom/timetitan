@@ -2,6 +2,10 @@
 
 namespace Core {
     public struct Vector2 {
+        public static Vector2 FromPolar (float magnitude, float angle) {
+            return new Vector2(Mathf.Cos(angle) * magnitude, Mathf.Sin(angle) * magnitude);
+        }
+
         #region operator
 
         #region +, -
@@ -143,11 +147,11 @@ namespace Core {
             };
         }
 
-        public float Distance(Vector2 vec) {
+        public float Distance (Vector2 vec) {
             return Mathf.Sqrt(DistanceSqr(vec));
         }
 
-        public float DistanceSqr(Vector2 vec) {
+        public float DistanceSqr (Vector2 vec) {
             return (this - vec).MagnitudeSqr( );
         }
 

@@ -10,7 +10,7 @@ using Universal.World;
 
 namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
-        public const int START_TIME = 10000;
+        public const int START_TIME = 1000000;
 
         private Player player;
         private List<Mob> mobs = new List<Mob>( );
@@ -153,6 +153,8 @@ namespace Universal.UI.Screens {
         }
 
         private void Challenge ( ) {
+            targetArea.Challenge(0, 0, 100, 0.2f, ChallengeProgressCallback);
+            /*
             if (score < 10) {
                 targetArea.Challenge(7, 0, 0.22f, ChallengeProgressCallback);
             } else if (score < 20) {
@@ -164,6 +166,7 @@ namespace Universal.UI.Screens {
             } else {
                 targetArea.Challenge(8, 3, 0.19f, ChallengeProgressCallback);
             }
+            */
         }
     }
 }

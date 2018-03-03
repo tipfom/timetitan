@@ -5,6 +5,7 @@ using System.Text;
 namespace Universal.World {
     public enum ChallengeType {
         SingleTap,
-        DoubleTap
+        DoubleTap,
+        PullTap
     }
 }
