@@ -49,7 +49,6 @@ namespace Android {
         public AndroidLeaderboard (Activity activity) {
             this.activity = activity;
 
-
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.Instance;
             if (googleApiAvailability.IsGooglePlayServicesAvailable(activity) == ConnectionResult.Success) {
                 string accountName;
@@ -116,11 +115,13 @@ namespace Android {
         }
 
         private void GetHighscoreFromGoogle ( ) {
-            GamesClass.Leaderboards.LoadCurrentPlayerLeaderboardScore(googleApiClient, LEADERBOARD_ID, LeaderboardVariant.TimeSpanAllTime, LeaderboardVariant.CollectionPublic).SetResultCallback<ILeaderboardsLoadPlayerScoreResult>(GetHighscoreCallback);
+            if (googleApiClient != null && googleApiClient.IsConnected) {
+                GamesClass.Leaderboards.LoadCurrentPlayerLeaderboardScore(googleApiClient, LEADERBOARD_ID, LeaderboardVariant.TimeSpanAllTime, LeaderboardVariant.CollectionPublic).SetResultCallback<ILeaderboardsLoadPlayerScoreResult>(GetHighscoreCallback);
+            }
         }
 
         private void GetHighscoreCallback (ILeaderboardsLoadPlayerScoreResult result) {
-            if (result.Status.StatusCode == GamesStatusCodes.StatusOk) {
+            if (result != null && result.Status != null && result.Status.StatusCode == GamesStatusCodes.StatusOk) {
                 int loadedHighscore = (int)result.Score.RawScore;
                 if (Highscore > loadedHighscore) {
                     SubmitToLeaderboard(Highscore);
