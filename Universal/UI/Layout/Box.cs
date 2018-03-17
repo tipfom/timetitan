@@ -64,7 +64,7 @@ namespace Universal.UI.Layout {
         }
 
         public bool Collides (Box box) {
-            return this.SAT(box) || box.SAT(this);
+            return this.SAT(box) && box.SAT(this);
         }
 
         private bool SAT (Box box) {
