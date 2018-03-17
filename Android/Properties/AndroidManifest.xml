@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="5" android:versionName="1.2.1" package="com.tipfom.timetitan" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.3" package="com.tipfom.timetitan" android:installLocation="auto" android:versionCode="6">
 	<uses-feature android:glEsVersion="0x00020000" />
 	<uses-sdk android:minSdkVersion="16" />
 	<!-- We need to be able to download map tiles and access Google Play Services-->
