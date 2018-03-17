@@ -10,7 +10,7 @@ using Universal.World;
 
 namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
-        public const int START_TIME = 1000000;
+        public const int START_TIME = 10000;
 
         private Player player;
         private List<Mob> mobs = new List<Mob>( );
@@ -81,6 +81,7 @@ namespace Universal.UI.Screens {
 
             if (!finished) {
                 timeLeftBar.Value = Math.Max(0, maxTime - (Environment.TickCount - startTime));
+                timeLeftBar.Color = new Color(timeLeftBar.Color.R, timeLeftBar.Color.G, timeLeftBar.Color.B, 1f - 0.75f * timeLeftBar.Value / timeLeftBar.Max);
                 if (timeLeftBar.Value == 0) {
                     Finished( );
                 }
@@ -146,27 +147,26 @@ namespace Universal.UI.Screens {
             score++;
             scoreLabel.Text = score.ToString( );
 
-            timeLeftBar.Max = maxTime;
+            if (score == 10 || score == 20 || score == 30 || score == 40 || score == 50) maxTime += 1000;
+
+            //timeLeftBar.Max = maxTime;
             timeLeftBar.Value = maxTime;
 
             Challenge( );
         }
 
         private void Challenge ( ) {
-            targetArea.Challenge(0, 0, 100, 0.2f, ChallengeProgressCallback);
-            /*
             if (score < 10) {
-                targetArea.Challenge(7, 0, 0.22f, ChallengeProgressCallback);
+                targetArea.Challenge(7, 0, 0, 0.22f, ChallengeProgressCallback);
             } else if (score < 20) {
-                targetArea.Challenge(7, 1, 0.21f, ChallengeProgressCallback);
+                targetArea.Challenge(7, 1, 0, 0.21f, ChallengeProgressCallback);
             } else if (score < 30) {
-                targetArea.Challenge(7, 2, 0.20f, ChallengeProgressCallback);
+                targetArea.Challenge(7, 1, 1, 0.20f, ChallengeProgressCallback);
             } else if (score < 40) {
-                targetArea.Challenge(8, 2, 0.19f, ChallengeProgressCallback);
+                targetArea.Challenge(7, 2, 1, 0.19f, ChallengeProgressCallback);
             } else {
-                targetArea.Challenge(8, 3, 0.19f, ChallengeProgressCallback);
+                targetArea.Challenge(8, 2, 1, 0.19f, ChallengeProgressCallback);
             }
-            */
         }
     }
 }

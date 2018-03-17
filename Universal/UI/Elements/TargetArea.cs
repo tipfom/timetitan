@@ -53,7 +53,7 @@ namespace Universal.UI.Elements {
 
         public override IEnumerable<RenderableElement> Draw ( ) {
             for (int i = 1; i < challenges.Count && i < 3; i++) {
-                foreach (RenderableElement renderableElement in GetRenderableElement(challenges[0], i - 1))
+                foreach (RenderableElement renderableElement in GetRenderableElement(challenges[i], i - 1))
                     yield return renderableElement;
             }
 
@@ -66,14 +66,14 @@ namespace Universal.UI.Elements {
         private IEnumerable<RenderableElement> GetRenderableElement (TapChallenge challenge, int previewIndex = -1) {
             switch (challenge.Type) {
                 case ChallengeType.SingleTap:
-                    yield return new RenderableElement(((SingleTapChallenge)challenge).Box.Verticies, "singletap", Depth, (previewIndex > 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_SINGLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((SingleTapChallenge)challenge).Box.Verticies, "singletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_SINGLETAP_COLOR : FAILED_COLOR));
                     break;
                 case ChallengeType.DoubleTap:
-                    yield return new RenderableElement(((DoubleTapChallenge)challenge).Box.Verticies, "doubletap", Depth, (previewIndex > 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((DoubleTapChallenge)challenge).Box.Verticies, "doubletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
                     break;
                 case ChallengeType.PullTap:
-                    yield return new RenderableElement(((PullTapChallenge)challenge).GoalBox.Verticies, "singletap", Depth, (previewIndex > 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
-                    yield return new RenderableElement(((PullTapChallenge)challenge).ScorerBox.Verticies, "pulltap", Depth, (previewIndex > 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((PullTapChallenge)challenge).GoalBox.Verticies, "singletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((PullTapChallenge)challenge).ScorerBox.Verticies, "pulltap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
                     break;
             }
         }
@@ -83,10 +83,10 @@ namespace Universal.UI.Elements {
                 challenges.Add(new SingleTapChallenge(Container.Location, Container.Size, relativeTargetSize));
             }
             while (doubleTapChallengeCount-- > 0) {
-                challenges.Insert(Mathi.Random(0, challenges.Count), new DoubleTapChallenge(Container.Location, Container.Size, relativeTargetSize));
+                challenges.Add(new DoubleTapChallenge(Container.Location, Container.Size, relativeTargetSize));
             }
             while (pullTapChallengeCount-- > 0) {
-                challenges.Insert(Mathi.Random(0, challenges.Count), new PullTapChallenge(Container.Location, Container.Size, relativeTargetSize));
+                challenges.Add(new PullTapChallenge(Container.Location, Container.Size, relativeTargetSize));
             }
         }
 
