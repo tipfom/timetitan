@@ -17,7 +17,7 @@ namespace Core {
             return Clamp(value, 0, 1);
         }
 
-        public static float Exp(float d) {
+        public static float Exp (float d) {
             return (float)Math.Exp(d);
         }
 
@@ -48,7 +48,7 @@ namespace Core {
             return new Vector2(vec1.X + (vec2.X - vec1.X) * percent, vec1.Y + (vec2.Y - vec1.Y) * percent);
         }
 
-        public static void Transform (float[ ] verticies, ref float[] result, float oldCenterX, float oldCenterY, float newCenterX, float newCenterY, float angle, bool mirrored = false) {
+        public static void Transform (float[ ] verticies, ref float[ ] result, float oldCenterX, float oldCenterY, float newCenterX, float newCenterY, float angle, bool mirrored = false) {
             for (int i = 0; i < verticies.Length / 2; i++) {
                 if (mirrored) {
                     result[i * 2 + 0] = newCenterX - (verticies[i * 2 + 0] - oldCenterX) * Cos(angle) + (verticies[i * 2 + 1] - oldCenterY) * Sin(angle);
@@ -60,7 +60,7 @@ namespace Core {
             }
         }
 
-        public static void TransformAtOrigin (float[ ] verticies, ref float[] result, float x, float y, float angle, bool mirrored, Vector2 scale) {
+        public static void TransformAtOrigin (float[ ] verticies, ref float[ ] result, float x, float y, float angle, bool mirrored, Vector2 scale) {
             float s = Sin(angle), c = Cos(angle);
             for (int i = 0; i < verticies.Length; i += 2) {
                 if (mirrored) {
@@ -86,10 +86,26 @@ namespace Core {
             }
         }
 
+        public static void TransformAtOrigin (float[ ] verticies, ref float[ ] result, float x, float y, float angle) {
+            float s = Sin(angle), c = Cos(angle);
+            for (int i = 0; i < verticies.Length; i += 2) {
+                result[i + 0] = x + verticies[i] * c - verticies[i + 1] * s;
+                result[i + 1] = y + verticies[i] * s + verticies[i + 1] * c;
+            }
+        }
+
         public static void TranslateAndScale (float[ ] verticies, ref float[ ] result, float x, float y, float scalex, float scaley) {
             for (int i = 0; i < verticies.Length; i += 2) {
                 result[i] = verticies[i] * scalex + x;
                 result[i + 1] = verticies[i + 1] * scaley + y;
+            }
+        }
+
+        public static void RotateAtOrigin (float[ ] verticies, ref float[ ] result, float angle) {
+            float s = Sin(angle), c = Cos(angle);
+            for (int i = 0; i < verticies.Length; i += 2) {
+                result[i + 0] = verticies[i] * c - verticies[i + 1] * s;
+                result[i + 1] = verticies[i] * s + verticies[i + 1] * c;
             }
         }
 
@@ -487,11 +503,11 @@ namespace Core {
             return Mathi.Random( ) / (float)int.MaxValue;
         }
 
-        public static float Random(float max) {
+        public static float Random (float max) {
             return Random( ) * max;
         }
 
-        public static float Random(float min, float max) {
+        public static float Random (float min, float max) {
             return min + Random( ) * (max - min);
         }
 

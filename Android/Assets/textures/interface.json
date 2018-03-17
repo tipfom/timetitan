@@ -16,7 +16,9 @@
   "map_floor": [ 16, 11, 1, 1 ],
 
   // target
-  "target": [ 18, 10, 20, 20 ],
+  "singletap": [ 18, 10, 20, 20 ],
+  "doubletap": [ 92, 10, 20, 20 ],
+  "pulltap": [ 114, 10, 18, 20 ],
 
   // misc
   "blank": [ 363, 5, 1, 1 ],

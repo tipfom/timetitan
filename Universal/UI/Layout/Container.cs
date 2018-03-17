@@ -47,6 +47,9 @@ namespace Universal.UI.Layout {
         private MarginType _Type;
         public MarginType Type { get { return _Type; } set { _Type = value; PropertyChanged( ); } }
 
+        private float _Rotation;
+        public float Rotation { get { return _Rotation; } set { _Rotation = value; PropertyChanged( ); } } // can be done way better, no complete refresh required // bad
+
         public Box Box;
 
         private Element element;
@@ -162,7 +165,7 @@ namespace Universal.UI.Layout {
                 }
             }
 
-            Box = new Box(Location, Size);
+            Box = new Box(Location, Size, Rotation); // ba
             Changed?.Invoke( );
         }
 
