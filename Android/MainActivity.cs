@@ -13,7 +13,7 @@ namespace Android {
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden,
         ScreenOrientation = ScreenOrientation.Portrait,
         Theme = "@style/thisTheme",
-        Icon = "@drawable/icon",
+        Icon = "@drawable/armor256px",
         HardwareAccelerated = true,
         MainLauncher = true,
         ResizeableActivity = true, 
