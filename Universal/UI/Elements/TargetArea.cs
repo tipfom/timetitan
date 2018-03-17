@@ -162,14 +162,19 @@ namespace Universal.UI.Elements {
             private Box _ScorerBox;
             public Box ScorerBox { get { return _ScorerBox; } }
 
-            private float[ ] cachedScorerVerticies;
-            private Vector2 offset;
+            private Vector2 dragOffset;
+            private Vector2 sizeDiff;
             private bool dragging = false;
+            private float collisionThreshold;
 
             public PullTapChallenge (Vector2 containerLocation, Vector2 containerSize, float relativeTargetSize) : base(ChallengeType.PullTap) {
                 Vector2 pullVector = Vector2.FromPolar(0.4f * containerSize.X, Mathf.Random(0, 360));
                 Vector2 goalSize = new Vector2(relativeTargetSize * containerSize.X, relativeTargetSize * containerSize.X);
                 Vector2 scorerSize = new Vector2(0.9f * relativeTargetSize * containerSize.X, relativeTargetSize * containerSize.X);
+                sizeDiff = (goalSize - scorerSize) / 2f;
+
+                collisionThreshold = (goalSize.X / 2f + scorerSize.X / 2f) / 2f;
+                collisionThreshold *= collisionThreshold;
 
                 float xmin, xmax;
                 if (pullVector.X < 0) {
@@ -190,26 +195,34 @@ namespace Universal.UI.Elements {
                 }
 
                 Vector2 position = new Vector2(Mathf.Random(xmin, xmax), -Mathf.Random(ymin, ymax));// -Mathf.Random(Math.Max(0, pullVector.Y), containerSize.Y - goalSize.Y + Math.Max(0, -pullVector.Y)));
+                position += containerLocation;
 
-                _GoalBox = new Box(containerLocation + position + new Vector2(-goalSize.X / 2f, goalSize.Y / 2f), goalSize);
-                _ScorerBox = new Box(containerLocation + position + pullVector + new Vector2(-scorerSize.X / 2f, scorerSize.Y / 2f), scorerSize);
+                Vector2 goalPosition = position + new Vector2(-goalSize.X / 2f, goalSize.Y / 2f);
+                Vector2 scorerPosition = position + pullVector + new Vector2(-scorerSize.X / 2f, scorerSize.Y / 2f);
+                Vector2 diff = goalPosition - scorerPosition;
+
+                _GoalBox = new Box(goalPosition, goalSize);
+                _ScorerBox = new Box(scorerPosition, scorerSize, (float)Math.Atan2(diff.Y, diff.X) * 180 / Mathf.PI - 90);
             }
 
             public override bool IsCompleted (Touch.Action action, Touch touch) {
                 switch (action) {
                     case Touch.Action.Begin:
                         if (_ScorerBox.Collides(touch.RelativePosition)) {
-                            offset = _ScorerBox.Position - touch.RelativePosition;
+                            dragOffset = _ScorerBox.Position - touch.RelativePosition;
                             dragging = true;
                             IsDirty = true;
                         }
                         break;
                     case Touch.Action.Move:
                         if (dragging) {
-                            _ScorerBox.Position = touch.RelativePosition + offset;
+                            _ScorerBox.Position = touch.RelativePosition + dragOffset;
                             IsDirty = true;
+                            Vector2 diff = _GoalBox.Position - _ScorerBox.Position + sizeDiff;
+                            _ScorerBox.Rotation = (float)Math.Atan2(diff.Y, diff.X) * 180 / Mathf.PI - 90;
+                            return diff.X * diff.X + diff.Y * diff.Y < collisionThreshold;
                         }
-                        return _ScorerBox.Collides(_GoalBox);
+                        return false;
                     case Touch.Action.End:
                         dragging = false;
                         IsDirty = true;
