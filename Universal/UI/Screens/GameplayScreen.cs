@@ -37,8 +37,8 @@ namespace Universal.UI.Screens {
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
             scoreLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute), Depth.Foreground, 0.1f, score.ToString( ));
 
-            Label highscoreLabel = new Label(this, new Container(new Margin(0.025f, 0f), MarginType.Absolute, dock: Position.Right | Position.Top, relative: scoreLabel), Depth.Foreground, 0.05f, new Color(255, 255, 255, 127), Manager.Leaderboard.Highscore.ToString( ), Label.TextAlignment.Right);
-            Manager.Leaderboard.HighscoreChanged += (newHighscore) => {
+            Label highscoreLabel = new Label(this, new Container(new Margin(0.025f, 0f), MarginType.Absolute, dock: Position.Right | Position.Top, relative: scoreLabel), Depth.Foreground, 0.05f, new Color(255, 255, 255, 127), Manager.StateManager.Highscore.ToString( ), Label.TextAlignment.Right);
+            Manager.StateManager.HighscoreChanged += (newHighscore) => {
                 highscoreLabel.Text = newHighscore.ToString( );
             };
 
@@ -121,7 +121,7 @@ namespace Universal.UI.Screens {
         private void Finished ( ) {
             finished = true;
             targetArea.Stop( );
-            Manager.Leaderboard.SubmitToLeaderboard(score);
+            Manager.StateManager.SubmitToLeaderboard(score);
 
             restartButton.Visible = true;
             timeLeftBar.Visible = false;

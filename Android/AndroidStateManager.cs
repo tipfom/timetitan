@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
 using Android;
 using Android.App;
 using Android.Content;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
+using Android.Gms.Drive;
 using Android.Gms.Games;
 using Android.Gms.Games.LeaderBoard;
+using Android.Gms.Games.Snapshot;
+using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Java.Lang;
+using Universal.Data;
 
-namespace Android {
-    public class AndroidLeaderboard : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener, Universal.ILeaderboard {
+namespace AndroidPlatform {
+    public class AndroidStateManager : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener, Universal.Data.IStateManager, Universal.Data.LocalCopyState.IDatabaseProvider {
         private const int REQUEST_CODE_RESOLVE = 9001;
         private const int REQUEST_CODE_LEADERBOARD = 9002;
         private const string SETTINGS_NAME = "googleplay";
@@ -21,6 +27,8 @@ namespace Android {
         private const string LEADERBOARD_ID = "CgkI3dz0sMcMEAIQAQ";
         private const string LOCAL_LEADERBOARD_NAME = "localleaderboard";
         private const string LOCAL_LEADERBOARD_HIGHSCORE = "highscore";
+
+        private const string LOCAL_COPY_STATE_NAME = "localstate";
 
         private Activity activity;
 
@@ -46,7 +54,12 @@ namespace Android {
             }
         }
 
-        public AndroidLeaderboard (Activity activity) {
+        private LocalCopyState _State;
+        public LocalCopyState State { get { return _State; } }
+
+        private ISharedPreferences localStateDatabase;
+
+        public AndroidStateManager (Activity activity) {
             this.activity = activity;
 
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.Instance;
@@ -56,9 +69,14 @@ namespace Android {
                     accountName = settings.GetString(SETTINGS_STRING_ACCOUNTNAME, string.Empty);
                 }
 
-                GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity, this, this);
-                builder.AddApi(GamesClass.API);
-                builder.AddScope(GamesClass.ScopeGames);
+                global::Android.Widget.Toast.MakeText(activity, "awdawd", Android.Widget.ToastLength.Short);
+
+                GoogleApiClient.Builder builder = new GoogleApiClient.Builder(activity, this, this)
+                    .AddApi(GamesClass.API)
+                    .AddScope(GamesClass.ScopeGames)
+                    .AddApi(DriveClass.API)
+                    .AddScope(DriveClass.ScopeAppfolder);
+
                 if (!string.IsNullOrEmpty(accountName)) builder.SetAccountName(accountName);
                 googleApiClient = builder.Build( );
 
@@ -68,6 +86,9 @@ namespace Android {
 
                 googleApiClient.Connect( );
             }
+
+            localStateDatabase = activity.GetSharedPreferences(LOCAL_COPY_STATE_NAME, FileCreationMode.Private);
+            _State = new LocalCopyState(this);
         }
 
         public void OnConnected (Bundle connectionHint) {
@@ -77,6 +98,10 @@ namespace Android {
                     editor.Commit( );
                 }
             }
+
+            new Thread(async ( ) => {
+                State.Sync(googleApiClient);
+            }, "InitGameStateThread").Start( );
 
             GetHighscoreFromGoogle( );
         }
@@ -95,8 +120,11 @@ namespace Android {
         }
 
         public void OnActivityResult (int requestCode, Result resultCode, Intent data) {
-            if (requestCode == REQUEST_CODE_RESOLVE && resultCode == Result.Ok) {
-                googleApiClient.Connect( );
+            if (requestCode == REQUEST_CODE_RESOLVE) {
+                if (resultCode == Result.Ok) {
+                    googleApiClient.Connect( );
+                }
+                currentlyResolvingConnection = false;
             }
         }
 
@@ -129,6 +157,34 @@ namespace Android {
                     Highscore = loadedHighscore;
                 }
             }
+        }
+
+        public void Write (string key, string value) {
+            using (ISharedPreferencesEditor editor = localStateDatabase.Edit( )) {
+                editor.PutString(key, value);
+                editor.Commit( );
+            }
+
+        }
+
+        public void Write (string key, long value) {
+            using (ISharedPreferencesEditor editor = localStateDatabase.Edit( )) {
+                editor.PutLong(key, value);
+                editor.Commit( );
+            }
+        }
+
+        public string ReadString (string key, string defaultValue = null) {
+            return localStateDatabase.GetString(key, defaultValue);
+        }
+
+        public long ReadLong (string key, long defaultValue = 0) {
+            return localStateDatabase.GetLong(key, defaultValue);
+        }
+
+        public new void Dispose ( ) {
+            base.Dispose( );
+            localStateDatabase.Dispose( );
         }
     }
 }

@@ -1,13 +1,15 @@
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Common.Apis;
 using Android.Gms.Games;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Universal;
 
-namespace Android {
+namespace AndroidPlatform {
     [Activity(
         Label = "@string/app_name",
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden,
@@ -31,6 +33,8 @@ namespace Android {
 
             // Create our OpenGL view, and display it
             Universal.Assets.Context = this;
+            Universal.Assets.Icon = BitmapFactory.DecodeResource(Resources, Resource.Drawable.armor256px);
+
 
             View = new View(this);
             View.SetOnTouchListener(TouchHandler.Instance);
@@ -43,8 +47,8 @@ namespace Android {
         }
 
         protected override void OnActivityResult (int requestCode, [GeneratedEnum] Result resultCode, Intent data) {
-            if (Manager.Leaderboard != null) {
-                ((AndroidLeaderboard)Manager.Leaderboard).OnActivityResult(requestCode, resultCode, data);
+            if (Manager.StateManager != null) {
+                ((AndroidStateManager)Manager.StateManager).OnActivityResult(requestCode, resultCode, data);
             }
 
             base.OnActivityResult(requestCode, resultCode, data);

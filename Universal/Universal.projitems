@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Assets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\CloudCopyState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\LocalCopyState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Debug.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\CachedGPUBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\ClientBuffer.cs" />
@@ -38,7 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\EntityRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\UIRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Window.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ILeaderboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\IStateManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Time.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />

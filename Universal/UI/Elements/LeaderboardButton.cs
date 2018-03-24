@@ -10,7 +10,7 @@ namespace Universal.UI.Elements {
         }
 
         private void LeaderboardButton_Release ( ) {
-            Manager.Leaderboard.ShowLeaderboard( );
+            Manager.StateManager.ShowLeaderboard( );
         }
 
         public override IEnumerable<RenderableElement> Draw ( ) {
