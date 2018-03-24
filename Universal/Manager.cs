@@ -36,9 +36,7 @@ namespace Universal {
 
             Window.Background = new Color(225, 225, 225, 255);
         }
-
-        static int off = 3;
-
+        
         public static void Update ( ) {
             Time.Update( );
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -53,12 +51,6 @@ namespace Universal {
 #if DEBUG
             Time.DrawFinished( );
 #endif
-
-            if (off-- == 0) {
-                off = 10;
-                StateManager.State.Gold++;
-                Debug.Print(typeof(Manager), StateManager.State.Gold);
-            }
         }
 
         public static void Destroy ( ) {

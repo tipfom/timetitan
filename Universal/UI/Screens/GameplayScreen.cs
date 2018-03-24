@@ -42,6 +42,10 @@ namespace Universal.UI.Screens {
                 highscoreLabel.Text = newHighscore.ToString( );
             };
 
+            Label goldLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Top), Depth.Foreground, 0.05f, new Color(255, 223, 0), Manager.StateManager.State.Gold.ToString( ), Label.TextAlignment.Right);
+            Manager.StateManager.State.GoldChanged += (newGold) => {
+                goldLabel.Text = newGold.ToString( );
+            };
 
             timeLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = maxTime, Value = maxTime, Color = new Color(255, 20, 20, 255) };
             hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
@@ -137,6 +141,8 @@ namespace Universal.UI.Screens {
 
                 Next( );
             }
+
+            Manager.StateManager.State.Gold += score;
         }
 
         private void Next ( ) {
