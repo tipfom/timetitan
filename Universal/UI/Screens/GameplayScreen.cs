@@ -27,6 +27,7 @@ namespace Universal.UI.Screens {
         private Button restartButton;
         private LeaderboardButton leaderboardButton;
         private HeartViewer heartViewer;
+        private List<Label> damageLabel = new List<Label>( );
 
         private ChangeNumericTextAnimation goldLabelAnimation;
 
@@ -98,6 +99,15 @@ namespace Universal.UI.Screens {
                 }
             }
 
+            for (int i = 0; i < damageLabel.Count; i++) {
+                damageLabel[i].Container.Margin.Top -= 0.05f * dt.TotalSeconds;
+                damageLabel[i].Color = new Color(damageLabel[i].Color.R, damageLabel[i].Color.G, damageLabel[i].Color.B, damageLabel[i].Color.A - 0.75f * dt.TotalSeconds);
+                if (damageLabel[i].Color.A <= 0) {
+                    damageLabel.RemoveAt(i);
+                    i--;
+                }
+            }
+
             multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
             multiplierBar.Value = multiplier;
         }
@@ -130,7 +140,9 @@ namespace Universal.UI.Screens {
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
                 player.Attack( );
-                if ((mobs[0].Health -= player.GetDamage(type)) < 0) {
+                float damage = player.GetDamage(type);
+                damageLabel.Add(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Top), 0.05f, damage.ToString( ), Label.TextAlignment.Center));
+                if ((mobs[0].Health -= damage) < 0) {
                     mobs[0].Die(null);
 
                     Next( );
