@@ -59,6 +59,7 @@ namespace Core {
         public static Color Purple { get; } = new Color(177, 13, 201);
         public static Color Black { get; } = new Color(0, 0, 0);
         public static Color White { get; } = new Color(255, 255, 255);
+        public static Color Gold { get; } = new Color(255, 223, 0);
         #endregion
     }
 }
