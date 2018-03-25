@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading;
 
 namespace Universal.Data {
-    public class LocalCopyState {
+    public class LocalCopyState : IDisposable {
         public const int VERSION = 1;
         public const int SECONDS_BETWEEN_CLOUDUPDATES = 100;
         public const string DATABASE_GOLD_KEY = "gold";
+        public const string DATABASE_STAGE_KEY = "stage";
         public const string DATABASE_LAST_SYNCED_TIMESTAMP = "lstimestamp";
-
 
         public long LastSyncedTimestamp { get; private set; }
 
@@ -22,35 +22,51 @@ namespace Universal.Data {
         public long Gold {
             get { return _Gold; }
             set {
-                if(_Gold != value) {
+                if (_Gold != value) {
                     _Gold = value;
-                    databaseProvider.Write(DATABASE_GOLD_KEY, value);
+                    DatabaseProvider.Write(DATABASE_GOLD_KEY, value);
                     IsCloudUpdateRequired = true;
                     GoldChanged?.Invoke(value);
                 }
             }
         }
 
-        private GoogleApiClient googleApiClient;
-        private IDatabaseProvider databaseProvider;
+        public event Action<long> StageChanged;
+        private long _Stage;
+        public long Stage {
+            get { return _Stage; }
+            set {
+                if (_Stage != value) {
+                    _Stage = value;
+                    DatabaseProvider.Write(DATABASE_STAGE_KEY, _Stage);
+                    IsCloudUpdateRequired = true;
+                    StageChanged?.Invoke(value);
+                }
+            }
+        }
+
+        public readonly IDatabaseProvider DatabaseProvider;
         private Timer updateCloudCopyTimer;
 
         public bool IsCloudUpdateRequired = false;
         private bool Syncing = false;
 
         public LocalCopyState (IDatabaseProvider databaseprovider) {
-            this.databaseProvider = databaseprovider;
+            DatabaseProvider = databaseprovider;
+            DatabaseProvider.OnConnectedToGoogle += OnConnectedToGoogle;
 
-            _Gold = databaseProvider.ReadLong(DATABASE_GOLD_KEY);
-            LastSyncedTimestamp = databaseProvider.ReadLong(DATABASE_LAST_SYNCED_TIMESTAMP);
+            _Gold = DatabaseProvider.ReadLong(DATABASE_GOLD_KEY);
+            LastSyncedTimestamp = DatabaseProvider.ReadLong(DATABASE_LAST_SYNCED_TIMESTAMP);
 
             updateCloudCopyTimer = new Timer(new TimerCallback((o) => UpdateCloudCopy( )), null, Timeout.Infinite, Timeout.Infinite);
         }
 
-        public async void Sync (GoogleApiClient googleApiClient) {
-            this.googleApiClient = googleApiClient;
+        private void OnConnectedToGoogle ( ) {
+            Sync( );
+        }
 
-            ISnapshot snapshot = await CloudCopyState.GetSnapshot(googleApiClient);
+        private async void Sync ( ) {
+            ISnapshot snapshot = await CloudCopyState.GetSnapshot(DatabaseProvider.GoogleApiClient);
             CloudCopyState cloudCopyState = new CloudCopyState(snapshot);
             if (cloudCopyState.Timestamp < LastSyncedTimestamp || cloudCopyState.Gold < Gold) {
                 IsCloudUpdateRequired = true;
@@ -60,29 +76,26 @@ namespace Universal.Data {
                 LastSyncedTimestamp = cloudCopyState.Timestamp;
             }
 
-            databaseProvider.Write(DATABASE_GOLD_KEY, Gold);
-            databaseProvider.Write(DATABASE_LAST_SYNCED_TIMESTAMP, LastSyncedTimestamp);
+            DatabaseProvider.Write(DATABASE_GOLD_KEY, Gold);
+            DatabaseProvider.Write(DATABASE_LAST_SYNCED_TIMESTAMP, LastSyncedTimestamp);
 
             updateCloudCopyTimer.Change(0, SECONDS_BETWEEN_CLOUDUPDATES * 1000);
         }
 
-        public async void UpdateCloudCopy ( ) {
+        private async void UpdateCloudCopy ( ) {
             if (IsCloudUpdateRequired && !Syncing) {
                 Syncing = true;
                 IsCloudUpdateRequired = false;
 #if __ANDROID__
-                LastSyncedTimestamp = await CloudCopyState.Update(Gold, googleApiClient);
-                databaseProvider.Write(DATABASE_LAST_SYNCED_TIMESTAMP, LastSyncedTimestamp);
+                LastSyncedTimestamp = await CloudCopyState.Update(Gold, Stage, DatabaseProvider.GoogleApiClient);
+                DatabaseProvider.Write(DATABASE_LAST_SYNCED_TIMESTAMP, LastSyncedTimestamp);
 #endif
                 Syncing = false;
             }
         }
 
-        public interface IDatabaseProvider {
-            void Write (string key, string value);
-            void Write (string key, long value);
-            string ReadString (string key, string defaultValue = null);
-            long ReadLong (string key, long defaultValue = 0);
+        public void Dispose ( ) {
+            DatabaseProvider.Dispose( );
         }
     }
 }

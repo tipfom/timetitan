@@ -11,7 +11,7 @@ using Universal.Data;
 
 namespace Universal {
     public static class Manager {
-        public static IStateManager StateManager;
+        public static LocalCopyState State;
 
         public static void Initialize ( ) {
             ColorProgram.Init( );
@@ -28,7 +28,7 @@ namespace Universal {
             EntityRenderer.Init( );
 
 #if __ANDROID__
-            StateManager = new AndroidStateManager((Android.App.Activity)Assets.Context);
+            State = new LocalCopyState(new AndroidDatabaseProvider((Android.App.Activity)Assets.Context));
 #endif
 
             Screen.MainMenu.Load( );
@@ -58,7 +58,7 @@ namespace Universal {
             Screen.MainMenu.Dispose( );
             UIRenderer.Dispose( );
             //LightManager.Destroy( );
-            StateManager.Dispose( );
+            State.Dispose( );
 
             ColorProgram.Destroy( );
             MatrixProgram.Destroy( );

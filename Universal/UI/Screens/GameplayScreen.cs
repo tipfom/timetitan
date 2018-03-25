@@ -36,8 +36,8 @@ namespace Universal.UI.Screens {
 
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
 
-            Label goldLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Top), Depth.Foreground, 0.05f, Color.Gold, Manager.StateManager.State.Gold.ToString( ), Label.TextAlignment.Right);
-            Manager.StateManager.State.GoldChanged += (newGold) => {
+            Label goldLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Top), Depth.Foreground, 0.05f, Color.Gold, Manager.State.Gold.ToString( ), Label.TextAlignment.Right);
+            Manager.State.GoldChanged += (newGold) => {
                 goldLabelAnimation = new ChangeNumericTextAnimation(goldLabel, (int)newGold, 0.3f);
             };
 
@@ -60,7 +60,6 @@ namespace Universal.UI.Screens {
                 Prepare( );
                 countdown.Start( );
             };
-
 
             EntityRenderer.VertexSize = map.Container.Height / 3f;
 
@@ -134,7 +133,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Next ( ) {
-            Manager.StateManager.State.Gold += (int)(100 * multiplier);
+            Manager.State.Gold += (int)(100 * multiplier);
 
             mobs.Insert(0, new Mob(Entity.PLUGGER));
 

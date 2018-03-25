@@ -47,8 +47,8 @@ namespace AndroidPlatform {
         }
 
         protected override void OnActivityResult (int requestCode, [GeneratedEnum] Result resultCode, Intent data) {
-            if (Manager.StateManager != null) {
-                ((AndroidStateManager)Manager.StateManager).OnActivityResult(requestCode, resultCode, data);
+            if (Manager.State != null) {
+                ((AndroidDatabaseProvider)Manager.State.DatabaseProvider).OnActivityResult(requestCode, resultCode, data);
             }
 
             base.OnActivityResult(requestCode, resultCode, data);

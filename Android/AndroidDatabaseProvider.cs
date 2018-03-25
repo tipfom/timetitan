@@ -19,47 +19,24 @@ using Java.Lang;
 using Universal.Data;
 
 namespace AndroidPlatform {
-    public class AndroidStateManager : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener, Universal.Data.IStateManager, Universal.Data.LocalCopyState.IDatabaseProvider {
+    public class AndroidDatabaseProvider : Java.Lang.Object, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener, Universal.Data.IDatabaseProvider {
         private const int REQUEST_CODE_RESOLVE = 9001;
         private const int REQUEST_CODE_LEADERBOARD = 9002;
         private const string SETTINGS_NAME = "googleplay";
         private const string SETTINGS_STRING_ACCOUNTNAME = "id";
-        private const string LEADERBOARD_ID = "CgkI3dz0sMcMEAIQAQ";
-        private const string LOCAL_LEADERBOARD_NAME = "localleaderboard";
-        private const string LOCAL_LEADERBOARD_HIGHSCORE = "highscore";
-
         private const string LOCAL_COPY_STATE_NAME = "localstate";
 
         private Activity activity;
 
-        private GoogleApiClient googleApiClient;
+        public event Action OnConnectedToGoogle;
+
         private bool currentlyResolvingConnection = false;
-
-        public event Action<int> HighscoreChanged;
-
-        private int _Highscore = -1;
-        public int Highscore {
-            get { return _Highscore; }
-            private set {
-                if (value > _Highscore) {
-                    _Highscore = value;
-                    using (ISharedPreferences settings = activity.GetSharedPreferences(LOCAL_LEADERBOARD_NAME, FileCreationMode.Private)) {
-                        using (ISharedPreferencesEditor editor = settings.Edit( )) {
-                            editor.PutInt(LOCAL_LEADERBOARD_HIGHSCORE, value);
-                            editor.Commit( );
-                        }
-                    }
-                    HighscoreChanged?.Invoke(value);
-                }
-            }
-        }
-
-        private LocalCopyState _State;
-        public LocalCopyState State { get { return _State; } }
+        private GoogleApiClient _GoogleApiClient;
+        public GoogleApiClient GoogleApiClient { get { return _GoogleApiClient; } }
 
         private ISharedPreferences localStateDatabase;
 
-        public AndroidStateManager (Activity activity) {
+        public AndroidDatabaseProvider (Activity activity) {
             this.activity = activity;
 
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.Instance;
@@ -78,32 +55,23 @@ namespace AndroidPlatform {
                     .AddScope(DriveClass.ScopeAppfolder);
 
                 if (!string.IsNullOrEmpty(accountName)) builder.SetAccountName(accountName);
-                googleApiClient = builder.Build( );
+                _GoogleApiClient = builder.Build( );
 
-                using (ISharedPreferences settings = activity.GetSharedPreferences(LOCAL_LEADERBOARD_NAME, FileCreationMode.Private)) {
-                    Highscore = settings.GetInt(LOCAL_LEADERBOARD_HIGHSCORE, 0);
-                }
-
-                googleApiClient.Connect( );
+                _GoogleApiClient.Connect( );
             }
 
             localStateDatabase = activity.GetSharedPreferences(LOCAL_COPY_STATE_NAME, FileCreationMode.Private);
-            _State = new LocalCopyState(this);
         }
 
         public void OnConnected (Bundle connectionHint) {
             using (ISharedPreferences settings = activity.GetSharedPreferences(SETTINGS_NAME, FileCreationMode.Private)) {
                 using (ISharedPreferencesEditor editor = settings.Edit( )) {
-                    editor.PutString(SETTINGS_STRING_ACCOUNTNAME, GamesClass.GetCurrentAccountName(googleApiClient));
+                    editor.PutString(SETTINGS_STRING_ACCOUNTNAME, GamesClass.GetCurrentAccountName(_GoogleApiClient));
                     editor.Commit( );
                 }
             }
 
-            new Thread(async ( ) => {
-                State.Sync(googleApiClient);
-            }, "InitGameStateThread").Start( );
-
-            GetHighscoreFromGoogle( );
+            OnConnectedToGoogle?.Invoke( );
         }
 
         public void OnConnectionFailed (ConnectionResult result) {
@@ -116,46 +84,15 @@ namespace AndroidPlatform {
         }
 
         public void OnConnectionSuspended (int cause) {
-            googleApiClient.Connect( );
+            _GoogleApiClient.Connect( );
         }
 
         public void OnActivityResult (int requestCode, Result resultCode, Intent data) {
             if (requestCode == REQUEST_CODE_RESOLVE) {
                 if (resultCode == Result.Ok) {
-                    googleApiClient.Connect( );
+                    _GoogleApiClient.Connect( );
                 }
                 currentlyResolvingConnection = false;
-            }
-        }
-
-        public void SubmitToLeaderboard (int score) {
-            Highscore = score;
-            if (googleApiClient != null && googleApiClient.IsConnected) {
-                GamesClass.Leaderboards.SubmitScore(googleApiClient, "CgkI3dz0sMcMEAIQAQ", score);
-            }
-        }
-
-        public void ShowLeaderboard ( ) {
-            if (googleApiClient != null && googleApiClient.IsConnected) {
-                var intent = GamesClass.Leaderboards.GetLeaderboardIntent(googleApiClient, "CgkI3dz0sMcMEAIQAQ");
-                activity.StartActivityForResult(intent, REQUEST_CODE_LEADERBOARD);
-            }
-        }
-
-        private void GetHighscoreFromGoogle ( ) {
-            if (googleApiClient != null && googleApiClient.IsConnected) {
-                GamesClass.Leaderboards.LoadCurrentPlayerLeaderboardScore(googleApiClient, LEADERBOARD_ID, LeaderboardVariant.TimeSpanAllTime, LeaderboardVariant.CollectionPublic).SetResultCallback<ILeaderboardsLoadPlayerScoreResult>(GetHighscoreCallback);
-            }
-        }
-
-        private void GetHighscoreCallback (ILeaderboardsLoadPlayerScoreResult result) {
-            if (result != null && result.Status != null && result.Status.StatusCode == GamesStatusCodes.StatusOk) {
-                int loadedHighscore = (int)result.Score.RawScore;
-                if (Highscore > loadedHighscore) {
-                    SubmitToLeaderboard(Highscore);
-                } else {
-                    Highscore = loadedHighscore;
-                }
             }
         }
 
