@@ -12,7 +12,7 @@ namespace Universal.UI.Elements {
         public float Max;
 
         private float _Value;
-        public float Value { get { return _Value; } set { IsDirty = value != _Value; _Value = value; } }
+        public float Value { get { return _Value; } set { IsDirty = IsDirty || value != _Value; _Value = value; } }
 
         public float Percentage { get { return Value / Max; } }
 
