@@ -176,18 +176,18 @@ namespace Universal.UI.Layout {
 
             suppressChanges = true;
 
-            if ((_Dock & Position.Left) == Position.Left) {
+            if ((_Anchor & Position.Left) == Position.Left) {
                 Margin.Right = target.X;
-            } else if ((_Dock & Position.Right) == Position.Right) {
+            } else if ((_Anchor & Position.Right) == Position.Right) {
                 Margin.Left = target.X;
             } else {
                 Margin.Left = target.X / 2f;
                 Margin.Right = target.X / 2f;
             }
 
-            if ((_Dock & Position.Top) == Position.Top) {
+            if ((_Anchor & Position.Top) == Position.Top) {
                 Margin.Bottom = target.Y;
-            } else if ((_Dock & Position.Bottom) == Position.Bottom) {
+            } else if ((_Anchor & Position.Bottom) == Position.Bottom) {
                 Margin.Top = target.Y;
             } else {
                 Margin.Top = target.Y / 2f;
