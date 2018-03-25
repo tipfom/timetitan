@@ -40,6 +40,17 @@ namespace Universal.Data {
             }
         }
 
+        public bool IsAhead (CloudCopyState conflictingState) {
+            if (Stage > conflictingState.Stage) {
+                return true;
+            } else if (Stage < conflictingState.Stage) {
+                return false;
+            } else if (Gold > conflictingState.Gold) {
+                return true;
+            }
+            return false;
+        }
+
         public static byte[ ] GetData (long Gold, long Stage) {
             byte[ ] data = new byte[BUFFER_LENGTH];
             using (MemoryStream memoryStream = new MemoryStream(data)) {
@@ -59,8 +70,8 @@ namespace Universal.Data {
 
             SnapshotMetadataChangeBuilder metadataChangeBuilder = new SnapshotMetadataChangeBuilder( );
             metadataChangeBuilder.SetCoverImage(Assets.Icon);
-            metadataChangeBuilder.SetDescription("Time Titan, " + Gold + " Gold");
-            metadataChangeBuilder.SetProgressValue(Gold);
+            metadataChangeBuilder.SetDescription($"Time Titan Stage {Stage}, {Gold} Gold");
+            metadataChangeBuilder.SetProgressValue(Stage);
             ISnapshotMetadataChange metadataChange = metadataChangeBuilder.Build( );
 
             ISnapshotsCommitSnapshotResult commitSnapshotResult = await GamesClass.Snapshots.CommitAndCloseAsync(googleApiClient, snapshot, metadataChange);
@@ -69,10 +80,25 @@ namespace Universal.Data {
         }
 
         public async static Task<ISnapshot> GetSnapshot (GoogleApiClient googleApiClient, string name = SNAPSHOT_NAME) {
-            Task<ISnapshotsOpenSnapshotResult> openSnapshotTask = GamesClass.Snapshots.OpenAsync(googleApiClient, name, true, Snapshots.ResolutionPolicyHighestProgress);
-            ISnapshotsOpenSnapshotResult openShapshotResult = await openSnapshotTask;
-            if (openShapshotResult.Status.StatusCode == GamesStatusCodes.StatusOk) {
-                return openShapshotResult.Snapshot;
+            Task<ISnapshotsOpenSnapshotResult> openSnapshotTask = GamesClass.Snapshots.OpenAsync(googleApiClient, name, true, Snapshots.ResolutionPolicyManual);
+            ISnapshotsOpenSnapshotResult openSnapshotResult = await openSnapshotTask;
+            return await GetSnapshotFromResult(googleApiClient, openSnapshotResult);
+        }
+
+        private async static Task<ISnapshot> GetSnapshotFromResult (GoogleApiClient googleApiClient, ISnapshotsOpenSnapshotResult openSnapshotResult) {
+            switch (openSnapshotResult.Status.StatusCode) {
+                case GamesStatusCodes.StatusOk:
+                    return openSnapshotResult.Snapshot;
+                case GamesStatusCodes.StatusSnapshotConflict:
+                    CloudCopyState state = new CloudCopyState(openSnapshotResult.Snapshot);
+                    CloudCopyState conflict = new CloudCopyState(openSnapshotResult.ConflictingSnapshot);
+                    ISnapshotsOpenSnapshotResult resolveSnapshotResult;
+                    if (conflict.IsAhead(state)) {
+                        resolveSnapshotResult = await GamesClass.Snapshots.ResolveConflictAsync(googleApiClient, openSnapshotResult.ConflictId, openSnapshotResult.ConflictingSnapshot);
+                    } else {
+                        resolveSnapshotResult = await GamesClass.Snapshots.ResolveConflictAsync(googleApiClient, openSnapshotResult.ConflictId, openSnapshotResult.Snapshot);
+                    }
+                    return await GetSnapshotFromResult(googleApiClient, resolveSnapshotResult);
             }
             return null;
         }

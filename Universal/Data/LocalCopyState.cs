@@ -56,6 +56,7 @@ namespace Universal.Data {
             DatabaseProvider.OnConnectedToGoogle += OnConnectedToGoogle;
 
             _Gold = DatabaseProvider.ReadLong(DATABASE_GOLD_KEY);
+            _Stage = DatabaseProvider.ReadLong(DATABASE_STAGE_KEY);
             LastSyncedTimestamp = DatabaseProvider.ReadLong(DATABASE_LAST_SYNCED_TIMESTAMP);
 
             updateCloudCopyTimer = new Timer(new TimerCallback((o) => UpdateCloudCopy( )), null, Timeout.Infinite, Timeout.Infinite);
@@ -68,11 +69,12 @@ namespace Universal.Data {
         private async void Sync ( ) {
             ISnapshot snapshot = await CloudCopyState.GetSnapshot(DatabaseProvider.GoogleApiClient);
             CloudCopyState cloudCopyState = new CloudCopyState(snapshot);
-            if (cloudCopyState.Timestamp < LastSyncedTimestamp || cloudCopyState.Gold < Gold) {
+            if (cloudCopyState.Timestamp < LastSyncedTimestamp || cloudCopyState.Stage < Stage) {
                 IsCloudUpdateRequired = true;
                 UpdateCloudCopy( );
             } else {
                 Gold = cloudCopyState.Gold;
+                Stage = cloudCopyState.Stage;
                 LastSyncedTimestamp = cloudCopyState.Timestamp;
             }
 

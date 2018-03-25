@@ -116,6 +116,7 @@ namespace Universal.UI.Screens {
         private void GameOver ( ) {
             targetArea.Stop( );
 
+            stageProgressBar.Value = 1;
             restartButton.Visible = true;
             leaderboardButton.Visible = true;
         }
@@ -147,6 +148,7 @@ namespace Universal.UI.Screens {
             if (stageProgressBar.Value > stageProgressBar.Max) {
                 stageProgressBar.Value = 1;
                 Manager.State.Stage++;
+                heartViewer.Active = heartViewer.Count;
             }
         }
 
