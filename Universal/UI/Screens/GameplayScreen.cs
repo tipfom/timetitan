@@ -4,6 +4,7 @@ using System.Text;
 using Core;
 using Universal.Graphics;
 using Universal.Graphics.Renderer;
+using Universal.UI.Animations;
 using Universal.UI.Elements;
 using Universal.UI.Layout;
 using Universal.World;
@@ -23,6 +24,8 @@ namespace Universal.UI.Screens {
         private Countdown countdown;
         private Button restartButton;
         private LeaderboardButton leaderboardButton;
+
+        private ChangeNumericTextAnimation goldLabelAnimation;
 
         private int score = 0;
         private int maxTime = START_TIME;
@@ -44,7 +47,7 @@ namespace Universal.UI.Screens {
 
             Label goldLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Top), Depth.Foreground, 0.05f, new Color(255, 223, 0), Manager.StateManager.State.Gold.ToString( ), Label.TextAlignment.Right);
             Manager.StateManager.State.GoldChanged += (newGold) => {
-                goldLabel.Text = newGold.ToString( );
+                goldLabelAnimation = new ChangeNumericTextAnimation(goldLabel, (int)newGold, 0.3f);
             };
 
             timeLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = maxTime, Value = maxTime, Color = new Color(255, 20, 20, 255) };
@@ -95,6 +98,12 @@ namespace Universal.UI.Screens {
             foreach (Mob mob in mobs) {
                 mob.Update(dt);
             }
+
+            if (goldLabelAnimation != null) {
+                if (goldLabelAnimation.Update(dt)) {
+                    goldLabelAnimation = null;
+                }
+            }
         }
 
         private void Prepare ( ) {
@@ -141,8 +150,6 @@ namespace Universal.UI.Screens {
 
                 Next( );
             }
-
-            Manager.StateManager.State.Gold += score;
         }
 
         private void Next ( ) {
@@ -159,6 +166,8 @@ namespace Universal.UI.Screens {
             timeLeftBar.Value = maxTime;
 
             Challenge( );
+
+            Manager.StateManager.State.Gold += score * 100;
         }
 
         private void Challenge ( ) {
