@@ -22,6 +22,7 @@ namespace Universal.UI.Screens {
         private TargetArea targetArea;
         private ProgressBar multiplierBar;
         private ProgressBar stageProgressBar;
+        private ProgressBar healthLeftBar;
         private Countdown countdown;
         private Button restartButton;
         private LeaderboardButton leaderboardButton;
@@ -40,6 +41,7 @@ namespace Universal.UI.Screens {
 
             stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 5, Value = 1 };
             multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
+            healthLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = 1, Value = 1, Color = new Color(255, 20, 20, 255) };
 
             heartViewer = new HeartViewer(this, new Container(new Margin(0.025f, 0.09f, 0.0125f, 0.09f), MarginType.Absolute, dock: Position.Bottom | Position.Left, relative: multiplierBar), Depth.Foreground, 3);
 
@@ -108,6 +110,9 @@ namespace Universal.UI.Screens {
 
             mobs.Clear( );
             mobs.Add(new Plugger( ));
+
+            healthLeftBar.Max = mobs[0].Health;
+            healthLeftBar.Value = mobs[0].Health;
         }
 
         private void Start ( ) {
@@ -130,6 +135,8 @@ namespace Universal.UI.Screens {
 
                     Next( );
                 }
+                
+                healthLeftBar.Value = mobs[0].Health;
                 multiplier += 0.2f;
             } else {
                 heartViewer.Active--;
@@ -143,6 +150,8 @@ namespace Universal.UI.Screens {
             Manager.State.Gold += (int)(100 * multiplier);
 
             mobs.Insert(0, new Plugger( ));
+            healthLeftBar.Max = mobs[0].Health;
+            healthLeftBar.Value = mobs[0].Health;
 
             stageProgressBar.Value++;
             if (stageProgressBar.Value > stageProgressBar.Max) {
