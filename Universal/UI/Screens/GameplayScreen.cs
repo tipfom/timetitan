@@ -130,12 +130,12 @@ namespace Universal.UI.Screens {
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
                 player.Attack( );
-                if ((mobs[0].Health -= player.Damage) < 0) {
+                if ((mobs[0].Health -= player.GetDamage(type)) < 0) {
                     mobs[0].Die(null);
 
                     Next( );
                 }
-                
+
                 healthLeftBar.Value = mobs[0].Health;
                 multiplier += 0.2f;
             } else {
@@ -162,7 +162,14 @@ namespace Universal.UI.Screens {
         }
 
         private TapChallenge GetTapChallenge ( ) {
-            return new SingleTapChallenge(targetArea.Container.Location, targetArea.Container.Size, 0.2f);
+            float random = Mathf.Random( );
+            if (random > 0.9f) {
+                return new PullTapChallenge(targetArea.Container.Location, targetArea.Container.Size, 0.2f);
+            } else if (random > 0.65f) {
+                return new DoubleTapChallenge(targetArea.Container.Location, targetArea.Container.Size, 0.2f);
+            } else {
+                return new SingleTapChallenge(targetArea.Container.Location, targetArea.Container.Size, 0.2f);
+            }
         }
     }
 }
