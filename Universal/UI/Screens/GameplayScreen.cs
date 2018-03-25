@@ -11,7 +11,6 @@ using Universal.World;
 
 namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
-        public const int START_TIME = 10000;
         public const float MULTIPLIER_DECLINE = 0.9f;
 
         private Player player;
@@ -20,6 +19,7 @@ namespace Universal.UI.Screens {
         private Map map;
         private TargetArea targetArea;
         private ProgressBar multiplierBar;
+        private ProgressBar stageProgressBar;
         private Countdown countdown;
         private Button restartButton;
         private LeaderboardButton leaderboardButton;
@@ -36,15 +36,20 @@ namespace Universal.UI.Screens {
 
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
 
-            Label goldLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Top), Depth.Foreground, 0.05f, Color.Gold, Manager.State.Gold.ToString( ), Label.TextAlignment.Right);
+            stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 5, Value = 1 };
+            multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
+
+            heartViewer = new HeartViewer(this, new Container(new Margin(0.025f, 0.09f, 0.0125f, 0.09f), MarginType.Absolute, dock: Position.Bottom | Position.Left, relative: multiplierBar), Depth.Foreground, 3);
+
+            Label goldLabel = new Label(this, new Container(new Margin(0, 0.025f), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Bottom, relative: multiplierBar), Depth.Foreground, 0.05f, Color.Gold, Manager.State.Gold.ToString( ), Label.TextAlignment.Left);
             Manager.State.GoldChanged += (newGold) => {
                 goldLabelAnimation = new ChangeNumericTextAnimation(goldLabel, (int)newGold, 0.3f);
             };
 
-
-            multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
-
-            heartViewer = new HeartViewer(this, new Container(new Margin(0.025f, 1f, 0.0125f, 0.075f), MarginType.Absolute, dock: Position.Bottom | Position.Left, relative: multiplierBar), Depth.Foreground, 3);
+            Label stageLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Bottom, relative: multiplierBar), Depth.Foreground, 0.09f, new Color(100, 100, 100, 100), Manager.State.Stage.ToString( ), Label.TextAlignment.Right);
+            Manager.State.StageChanged += (newStage) => {
+                stageLabel.Text = newStage.ToString( );
+            };
 
             targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
 
@@ -89,7 +94,7 @@ namespace Universal.UI.Screens {
                 }
             }
 
-            
+
             multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
             multiplierBar.Value = multiplier;
         }
@@ -138,6 +143,11 @@ namespace Universal.UI.Screens {
             mobs.Insert(0, new Mob(Entity.PLUGGER));
 
             Challenge( );
+            stageProgressBar.Value++;
+            if (stageProgressBar.Value > stageProgressBar.Max) {
+                stageProgressBar.Value = 1;
+                Manager.State.Stage++;
+            }
         }
 
         private void Challenge ( ) {

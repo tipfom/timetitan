@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Universal.UI.Layout;
@@ -13,6 +14,7 @@ namespace Universal.UI.Elements {
         public HeartViewer (Screen owner, Container container, int depth, int count) : base(owner, container, depth) {
             Active = count;
             Count = count;
+            container.AdjustSize(new Vector2(count * 1.1f * Container.Height, Container.Height));
         }
 
         public override IEnumerable<RenderableElement> Draw ( ) {

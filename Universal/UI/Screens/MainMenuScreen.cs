@@ -12,10 +12,15 @@ namespace Universal.UI.Screens {
         private ChangeNumericTextAnimation goldLabelAnimation;
 
         public MainMenuScreen ( ) {
-            Label timeLabel = new Label(this, new Container(new Margin(0f, 0f, 0.05f, 0f), MarginType.Absolute, Position.Center, Position.Top | Position.Center), Depth.Foreground, 0.2f, new Color(18, 196, 98), "TIME", Label.TextAlignment.Center);
-            Label titanLabel = new Label(this, new Container(new Margin(0f, 0f, 0.27f, 0f), MarginType.Absolute, Position.Center, Position.Top | Position.Center), Depth.Foreground, 0.2f, new Color(18, 196, 98), "TITAN", Label.TextAlignment.Center);
-            
-            Label goldLabel = new Label(this, new Container(new Margin(0f, 0.025f), MarginType.Absolute, anchor: Position.Bottom | Position.Right, dock: Position.Right | Position.Top), Depth.Foreground, 0.1f, new Color(255, 223, 0), Manager.State.Gold.ToString( ), Label.TextAlignment.Right);
+            Label timeLabel = new Label(this, new Container(new Margin(0f, 0f, 0.05f, 0f), MarginType.Absolute, Position.Top | Position.Center, Position.Top | Position.Center), Depth.Foreground, 0.2f, new Color(18, 196, 98), "TIME", Label.TextAlignment.Center);
+            Label titanLabel = new Label(this, new Container(new Margin(0f, 0f, 0.05f, 0f), MarginType.Absolute, anchor: Position.Top | Position.Center, dock: Position.Bottom | Position.Center, relative: timeLabel), Depth.Foreground, 0.2f, new Color(18, 196, 98), "TITAN", Label.TextAlignment.Center);
+
+            Label stageLabel = new Label(this, new Container(new Margin(0.05f, 0.05f), MarginType.Absolute, anchor: Position.Bottom | Position.Right, dock: Position.Right | Position.Bottom), Depth.Foreground, 0.1f, new Color(100, 100, 100), Manager.State.Stage.ToString( ), Label.TextAlignment.Right);
+            Manager.State.StageChanged += (newStage) => {
+                stageLabel.Text = newStage.ToString( );
+            };
+
+            Label goldLabel = new Label(this, new Container(new Margin(0f, 0.025f), MarginType.Absolute, anchor: Position.Bottom | Position.Right, dock: Position.Right | Position.Top, relative: stageLabel), Depth.Foreground, 0.1f, new Color(255, 223, 0), Manager.State.Gold.ToString( ), Label.TextAlignment.Right);
             Manager.State.GoldChanged += (newGold) => {
                 goldLabelAnimation = new ChangeNumericTextAnimation(goldLabel, (int)newGold, 0.3f);
             };
@@ -32,7 +37,7 @@ namespace Universal.UI.Screens {
 
         public override void Update (DeltaTime dt) {
             base.Update(dt);
-            if(goldLabelAnimation != null) {
+            if (goldLabelAnimation != null) {
                 if (goldLabelAnimation.Update(dt)) {
                     goldLabelAnimation = null;
                 }
