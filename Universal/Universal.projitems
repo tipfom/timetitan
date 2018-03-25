@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Animations\ChangeNumericTextAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\UpdateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Countdown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Label.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\LeaderboardButton.cs" />
@@ -55,6 +56,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\PlayButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\ProgressBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TargetArea.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\DoubleTapChallenge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\PullTapChallenge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\SingleTapChallenge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\TapChallenge.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Box.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RenderableElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Container.cs" />

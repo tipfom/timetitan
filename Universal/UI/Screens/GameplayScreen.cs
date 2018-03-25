@@ -19,7 +19,6 @@ namespace Universal.UI.Screens {
 
         private Map map;
         private TargetArea targetArea;
-        private ProgressBar hitsLeftBar;
         private ProgressBar multiplierBar;
         private Countdown countdown;
         private Button restartButton;
@@ -43,7 +42,6 @@ namespace Universal.UI.Screens {
             };
 
 
-            hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
             multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
 
             heartViewer = new HeartViewer(this, new Container(new Margin(0.025f, 1f, 0.0125f, 0.075f), MarginType.Absolute, dock: Position.Bottom | Position.Left, relative: multiplierBar), Depth.Foreground, 3);
@@ -92,16 +90,15 @@ namespace Universal.UI.Screens {
                 }
             }
 
+            
             multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
             multiplierBar.Value = multiplier;
         }
 
         private void Prepare ( ) {
-            hitsLeftBar.Max = 10;
-            hitsLeftBar.Value = 10;
-            hitsLeftBar.Visible = true;
             restartButton.Visible = false;
             leaderboardButton.Visible = false;
+            heartViewer.Active = heartViewer.Count;
             targetArea.Clear( );
 
             mobs.Clear( );
@@ -112,31 +109,34 @@ namespace Universal.UI.Screens {
             Challenge( );
         }
 
-        private void Finished ( ) {
+        private void GameOver ( ) {
             targetArea.Stop( );
 
             restartButton.Visible = true;
-            hitsLeftBar.Visible = false;
             leaderboardButton.Visible = true;
-
         }
 
-        private void ChallengeProgressCallback (int targetsLeft) {
-            hitsLeftBar.Value = targetsLeft;
-            player.Attack( );
-            if (targetsLeft == 0) {
-                mobs[0].Die(null);
+        private void ChallengeProgressCallback (bool isHit, int targetsLeft) {
+            if (isHit) {
+                player.Attack( );
+                if (targetsLeft == 0) {
+                    mobs[0].Die(null);
 
-                Next( );
+                    Next( );
+                }
+                multiplier += 0.2f;
+            } else {
+                heartViewer.Active--;
+                if (heartViewer.Active == 0) {
+                    GameOver( );
+                }
             }
-            multiplier += 0.2f;
         }
 
         private void Next ( ) {
             Manager.StateManager.State.Gold += (int)(100 * multiplier);
 
             mobs.Insert(0, new Mob(Entity.PLUGGER));
-            hitsLeftBar.Value = 10;
 
             Challenge( );
         }
