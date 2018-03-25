@@ -24,6 +24,7 @@ namespace Universal.UI.Screens {
         private Countdown countdown;
         private Button restartButton;
         private LeaderboardButton leaderboardButton;
+        private HeartViewer heartViewer;
 
         private ChangeNumericTextAnimation goldLabelAnimation;
 
@@ -41,8 +42,11 @@ namespace Universal.UI.Screens {
                 goldLabelAnimation = new ChangeNumericTextAnimation(goldLabel, (int)newGold, 0.3f);
             };
 
+
             hitsLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = 10 };
             multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
+
+            heartViewer = new HeartViewer(this, new Container(new Margin(0.025f, 1f, 0.0125f, 0.075f), MarginType.Absolute, dock: Position.Bottom | Position.Left, relative: multiplierBar), Depth.Foreground, 3);
 
             targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
 
