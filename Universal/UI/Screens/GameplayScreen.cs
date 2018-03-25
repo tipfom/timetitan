@@ -6,6 +6,7 @@ using Universal.Graphics;
 using Universal.Graphics.Renderer;
 using Universal.UI.Animations;
 using Universal.UI.Elements;
+using Universal.UI.Elements.Challenges;
 using Universal.UI.Layout;
 using Universal.World;
 
@@ -51,7 +52,7 @@ namespace Universal.UI.Screens {
                 stageLabel.Text = newStage.ToString( );
             };
 
-            targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
+            targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center, ChallengeProgressCallback, GetTapChallenge);
 
             countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
             restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART", Depth.Foreground, Color.White) { Visible = false };
@@ -110,7 +111,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Start ( ) {
-            Challenge( );
+            targetArea.Start( );
         }
 
         private void GameOver ( ) {
@@ -121,10 +122,10 @@ namespace Universal.UI.Screens {
             leaderboardButton.Visible = true;
         }
 
-        private void ChallengeProgressCallback (bool isHit, int targetsLeft) {
+        private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
                 player.Attack( );
-                if (targetsLeft == 0) {
+                if (true) {
                     mobs[0].Die(null);
 
                     Next( );
@@ -143,7 +144,6 @@ namespace Universal.UI.Screens {
 
             mobs.Insert(0, new Mob(Entity.PLUGGER));
 
-            Challenge( );
             stageProgressBar.Value++;
             if (stageProgressBar.Value > stageProgressBar.Max) {
                 stageProgressBar.Value = 1;
@@ -152,18 +152,8 @@ namespace Universal.UI.Screens {
             }
         }
 
-        private void Challenge ( ) {
-            //if (score < 10) {
-            targetArea.Challenge(7, 0, 0, 0.22f, ChallengeProgressCallback);
-            //} else if (score < 20) {
-            //    targetArea.Challenge(7, 1, 0, 0.21f, ChallengeProgressCallback);
-            //} else if (score < 30) {
-            //    targetArea.Challenge(7, 1, 1, 0.20f, ChallengeProgressCallback);
-            //} else if (score < 40) {
-            //    targetArea.Challenge(7, 2, 1, 0.19f, ChallengeProgressCallback);
-            //} else {
-            //    targetArea.Challenge(8, 2, 1, 0.19f, ChallengeProgressCallback);
-            //}
+        private TapChallenge GetTapChallenge ( ) {
+            return new SingleTapChallenge(targetArea.Container.Location, targetArea.Container.Size, 0.2f);
         }
     }
 }

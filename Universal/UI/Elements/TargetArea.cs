@@ -14,14 +14,18 @@ namespace Universal.UI.Elements {
         private static readonly Color[ ] PREVIEW_COLOR = new[ ] { new Color(144, 144, 144, 128), new Color(144, 144, 144, 32) };
         private static readonly Color FAILED_COLOR = new Color(204, 0, 0, 255);
 
-        public delegate void HitCallback (bool isHit, int targetsLeft);
+        public delegate void HitCallback (bool isHit, ChallengeType type);
+        public delegate TapChallenge GetNewChallengeCallback ( );
 
         private HitCallback hitCallback;
+        private GetNewChallengeCallback getNewChallengeCallback;
 
         private bool active;
-        private List<TapChallenge> challenges = new List<TapChallenge>(10);
+        private List<TapChallenge> challenges = new List<TapChallenge>(3);
 
-        public TargetArea (Screen owner, Container container, int depth) : base(owner, container, depth, false) {
+        public TargetArea (Screen owner, Container container, int depth, HitCallback hitcallback, GetNewChallengeCallback getnewchallengecallback) : base(owner, container, depth, false) {
+            hitCallback = hitcallback;
+            getNewChallengeCallback = getnewchallengecallback;
         }
 
         public void Clear ( ) {
@@ -29,9 +33,8 @@ namespace Universal.UI.Elements {
             IsDirty = true;
         }
 
-        public void Challenge (int singleTapChallengeCount, int doubleTapChallengeCount, int pullTapChallengeCount, float relativeTargetSize, HitCallback callback) {
-            GenerateChallenges(singleTapChallengeCount, doubleTapChallengeCount, pullTapChallengeCount, relativeTargetSize);
-            hitCallback = callback;
+        public void Start ( ) {
+            for (int i = 0; i < 3; i++) challenges.Add(getNewChallengeCallback( ));
             active = true;
             IsDirty = true;
         }
@@ -43,15 +46,15 @@ namespace Universal.UI.Elements {
 
         public override bool HandleTouch (Touch.Action action, Touch touch) {
             if (active) {
-                switch(challenges[0].Update(action, touch)) {
+                switch (challenges[0].Update(action, touch)) {
                     case UpdateAction.Complete:
+                        hitCallback?.Invoke(true, challenges[0].Type);
                         UpdateTarget( );
-                        hitCallback?.Invoke(true, challenges.Count);
                         break;
                     case UpdateAction.Ignore:
                         break;
                     case UpdateAction.Miss:
-                        hitCallback?.Invoke(false, challenges.Count);
+                        hitCallback?.Invoke(false, challenges[0].Type);
                         break;
                 }
             }
@@ -90,20 +93,9 @@ namespace Universal.UI.Elements {
             }
         }
 
-        private void GenerateChallenges (int singleTapChallengeCount, int doubleTapChallengeCount, int pullTapChallengeCount, float relativeTargetSize) {
-            while (singleTapChallengeCount-- > 0) {
-                challenges.Add(new SingleTapChallenge(Container.Location, Container.Size, relativeTargetSize));
-            }
-            while (doubleTapChallengeCount-- > 0) {
-                challenges.Add(new DoubleTapChallenge(Container.Location, Container.Size, relativeTargetSize));
-            }
-            while (pullTapChallengeCount-- > 0) {
-                challenges.Add(new PullTapChallenge(Container.Location, Container.Size, relativeTargetSize));
-            }
-        }
-
         private void UpdateTarget ( ) {
             if (challenges.Count > 0) challenges.RemoveAt(0);
+            challenges.Add(getNewChallengeCallback( ));
             IsDirty = true;
         }
     }
