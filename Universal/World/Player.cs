@@ -11,8 +11,9 @@ namespace Universal.World {
 
         private int current = 0;
         private bool attacking = false;
-        private bool attackStartTime;
         private float frameTimeLeft = TIME_BETWEEN_FRAMES;
+
+        public float Damage = 2.3f;
 
         public Player ( ) : base(Entity.PLAYER) {
 

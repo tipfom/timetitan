@@ -5,7 +5,7 @@ using Core;
 using Core.Graphics;
 
 namespace Universal.World {
-    public class Mob : Entity {
+    public abstract class Mob : Entity {
         public const int DEATH_DELAY = 1000;
 
         private float offset = 0f;
@@ -14,6 +14,8 @@ namespace Universal.World {
         private bool dying = false;
         private Action<Mob> deadCallback;
         private int dyingEndTime;
+
+        public float Health;
 
         public Mob (int species) : base(species) {
         }

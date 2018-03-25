@@ -9,6 +9,7 @@ using Universal.UI.Elements;
 using Universal.UI.Elements.Challenges;
 using Universal.UI.Layout;
 using Universal.World;
+using Universal.World.Mobs;
 
 namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
@@ -95,7 +96,6 @@ namespace Universal.UI.Screens {
                 }
             }
 
-
             multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
             multiplierBar.Value = multiplier;
         }
@@ -107,7 +107,7 @@ namespace Universal.UI.Screens {
             targetArea.Clear( );
 
             mobs.Clear( );
-            mobs.Add(new Mob(Entity.PLUGGER));
+            mobs.Add(new Plugger( ));
         }
 
         private void Start ( ) {
@@ -125,7 +125,7 @@ namespace Universal.UI.Screens {
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
                 player.Attack( );
-                if (true) {
+                if ((mobs[0].Health -= player.Damage) < 0) {
                     mobs[0].Die(null);
 
                     Next( );
@@ -142,7 +142,7 @@ namespace Universal.UI.Screens {
         private void Next ( ) {
             Manager.State.Gold += (int)(100 * multiplier);
 
-            mobs.Insert(0, new Mob(Entity.PLUGGER));
+            mobs.Insert(0, new Plugger( ));
 
             stageProgressBar.Value++;
             if (stageProgressBar.Value > stageProgressBar.Max) {
