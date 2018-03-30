@@ -10,6 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Assets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\CloudCopyState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\IDatabaseProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\LocalCopyState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Debug.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\CachedGPUBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\ClientBuffer.cs" />
@@ -38,19 +41,27 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\EntityRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Renderer\UIRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Window.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ILeaderboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Manager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Time.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Animations\Animation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Animations\ChangeNumericTextAnimation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Animations\FadeTextAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\UpdateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Countdown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Label.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\LeaderboardButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Lifestack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Map.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Panel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\PlayButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\ProgressBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TargetArea.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\DoubleTapChallenge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\PullTapChallenge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\SingleTapChallenge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\TapChallenge.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Box.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\RenderableElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Layout\Container.cs" />
@@ -64,7 +75,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Element.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\ChallengeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Entity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\EntitySpecies.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Mob.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\Mobs\Chest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\Mobs\Octopus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\Mobs\Plugger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Player.cs" />
   </ItemGroup>
 </Project>

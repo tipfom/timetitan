@@ -11,10 +11,11 @@ namespace Universal.World {
 
         private int current = 0;
         private bool attacking = false;
-        private bool attackStartTime;
         private float frameTimeLeft = TIME_BETWEEN_FRAMES;
 
-        public Player ( ) : base(Entity.PLAYER) {
+        public float BaseDamage = 2.3f;
+
+        public Player ( ) : base(EntitySpecies.PLAYER) {
 
         }
 
@@ -38,6 +39,18 @@ namespace Universal.World {
                     }
                 }
             }
+        }
+
+        public float GetDamage(ChallengeType challengeType) {
+            switch (challengeType) {
+                case ChallengeType.SingleTap:
+                    return BaseDamage;
+                case ChallengeType.DoubleTap:
+                    return BaseDamage * 2.3f;
+                case ChallengeType.PullTap:
+                    return BaseDamage * 1.5f;
+            }
+            return 0f;
         }
 
         public override IEnumerable<RenderableObject> Draw ( ) {

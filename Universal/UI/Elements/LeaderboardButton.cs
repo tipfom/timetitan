@@ -10,11 +10,11 @@ namespace Universal.UI.Elements {
         }
 
         private void LeaderboardButton_Release ( ) {
-            Manager.Leaderboard.ShowLeaderboard( );
+            // Manager.StateManager.ShowLeaderboard( );
         }
 
         public override IEnumerable<RenderableElement> Draw ( ) {
-            yield return new RenderableElement(Container.Box.Verticies, "button_leaderboard", Depth);
+            yield return new RenderableElement(Container.Box.Verticies, "button_leaderboard", Depth, Core.Color.Black);
         }
     }
 }

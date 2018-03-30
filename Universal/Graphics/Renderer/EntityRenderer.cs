@@ -11,7 +11,7 @@ namespace Universal.Graphics.Renderer {
     public static class EntityRenderer {
         public const int MAX_VERTEX_COUNT = 20;
 
-        private static Spritebatch2D[ ] entityTextures = new Spritebatch2D[2];
+        private static Spritebatch2D[ ] entityTextures = new Spritebatch2D[4];
 
         private static BufferBatch buffer;
         private static ClientBuffer vertexBuffer;
@@ -29,8 +29,10 @@ namespace Universal.Graphics.Renderer {
             colorBuffer = new ClientBuffer(4, MAX_VERTEX_COUNT, PrimitiveType.Quad);
             buffer = new BufferBatch(new IndexBuffer(MAX_VERTEX_COUNT), vertexBuffer, colorBuffer, textureBuffer);
 
-            entityTextures[Entity.PLAYER] = Assets.GetSprite("player/default");
-            entityTextures[Entity.PLUGGER] = Assets.GetSprite("plugger");
+            entityTextures[(int)EntitySpecies.PLAYER] = Assets.GetSprite("player/default");
+            entityTextures[(int)EntitySpecies.PLUGGER] = Assets.GetSprite("mobs/plugger");
+            entityTextures[(int)EntitySpecies.OCTOPUS] = Assets.GetSprite("mobs/octopus");
+            entityTextures[(int)EntitySpecies.CHEST] = Assets.GetSprite("mobs/chest");
         }
 
         public static void Draw (Entity entity, Vector2 position) {
@@ -42,13 +44,13 @@ namespace Universal.Graphics.Renderer {
             int index = 0;
             foreach (RenderableObject renderableObject in entity.Draw( )) {
                 Array.Copy(renderableObject.Verticies, 0, vertexBuffer.Data, index, 8);
-                Array.Copy(entityTextures[entity.Species][renderableObject.Texture], 0, textureBuffer.Data, index, 8);
+                Array.Copy(entityTextures[(int)entity.Species][renderableObject.Texture], 0, textureBuffer.Data, index, 8);
                 Array.Copy(renderableObject.Color.ToArray4( ), 0, colorBuffer.Data, index * 2, 16);
                 index += 8;
             }
 
             Program.Begin( );
-            Program.Draw(buffer, entityTextures[entity.Species], matrix, true);
+            Program.Draw(buffer, entityTextures[(int)entity.Species], matrix, true);
             Program.End( );
         }
     }

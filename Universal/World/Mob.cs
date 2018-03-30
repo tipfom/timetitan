@@ -5,17 +5,22 @@ using Core;
 using Core.Graphics;
 
 namespace Universal.World {
-    public class Mob : Entity {
+    public abstract class Mob : Entity {
         public const int DEATH_DELAY = 1000;
 
-        private float offset = 0f;
+        protected float offset = 0f;
 
         private float fadePercentage = 1f;
         private bool dying = false;
         private Action<Mob> deadCallback;
         private int dyingEndTime;
 
-        public Mob (int species) : base(species) {
+        public float Health;
+        public float Value;
+
+        public Mob (EntitySpecies species, float health, float value) : base(species) {
+            Health = health;
+            Value = value;
         }
 
         public void Die (Action<Mob> dyingFinishedCallback) {
@@ -37,9 +42,12 @@ namespace Universal.World {
             }
         }
 
-        public override IEnumerable<RenderableObject> Draw ( ) {
-            float top = 1f + offset;
-            yield return new RenderableObject(new float[ ] { -27f / 20f, top, -27f / 20f, offset, 0f, offset, 0f, top }, "body", new Color(1f, 1f, 1f, fadePercentage));
+        protected Color GetColor ( ) {
+            if (fadePercentage != 1f) {
+                return new Color(1f, 1f, 1f, fadePercentage);
+            } else {
+                return Color.White;
+            }
         }
     }
 }

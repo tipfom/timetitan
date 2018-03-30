@@ -18,6 +18,8 @@ namespace Universal {
     public static class Assets {
 #if __ANDROID__
         public static Context Context { get; set; }
+
+        public static Bitmap Icon { get; set; } 
 #endif
 
         public static void Destroy ( ) {

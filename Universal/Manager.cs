@@ -6,10 +6,12 @@ using Universal.Graphics.Programs;
 using OpenTK.Graphics.ES20;
 using Core.Graphics;
 using Universal.Graphics.Renderer;
+using AndroidPlatform;
+using Universal.Data;
 
 namespace Universal {
     public static class Manager {
-        public static ILeaderboard Leaderboard;
+        public static LocalCopyState State;
 
         public static void Initialize ( ) {
             ColorProgram.Init( );
@@ -26,7 +28,7 @@ namespace Universal {
             EntityRenderer.Init( );
 
 #if __ANDROID__
-            Leaderboard = new Android.AndroidLeaderboard((Android.App.Activity)Assets.Context);
+            State = new LocalCopyState(new AndroidDatabaseProvider((Android.App.Activity)Assets.Context));
 #endif
 
             Screen.MainMenu.Load( );
@@ -34,7 +36,7 @@ namespace Universal {
 
             Window.Background = new Color(225, 225, 225, 255);
         }
-
+        
         public static void Update ( ) {
             Time.Update( );
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -56,6 +58,7 @@ namespace Universal {
             Screen.MainMenu.Dispose( );
             UIRenderer.Dispose( );
             //LightManager.Destroy( );
+            State.Dispose( );
 
             ColorProgram.Destroy( );
             MatrixProgram.Destroy( );

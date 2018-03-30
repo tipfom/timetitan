@@ -5,7 +5,7 @@ using Universal.Graphics.Renderer;
 using Universal.UI;
 using Window = Universal.Graphics.Window;
 
-namespace Android {
+namespace AndroidPlatform {
     public class TouchHandler : Java.Lang.Object, View.IOnTouchListener {
         const int MAX_TOUCH_COUNT = 4;
 

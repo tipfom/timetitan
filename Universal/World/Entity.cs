@@ -7,16 +7,9 @@ using Universal.Graphics.Renderer;
 
 namespace Universal.World {
     public abstract class Entity {
+        public readonly EntitySpecies Species;
 
-        public const int PLAYER = 0;
-        public const int PLUGGER = 1;
-
-
-        public readonly int Species;
-
-      
-
-        public Entity (int species) {
+        public Entity (EntitySpecies species) {
             Species = species;
         }
         

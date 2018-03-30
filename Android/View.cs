@@ -5,7 +5,7 @@ using OpenTK.Platform.Android;
 using Universal;
 using Universal.Graphics;
 
-namespace Android {
+namespace AndroidPlatform {
     public class View : AndroidGameView {
         bool firstLoad = false;
 
