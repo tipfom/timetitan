@@ -59,7 +59,7 @@ namespace Universal.UI.Screens {
             targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center, ChallengeProgressCallback, GetTapChallenge);
 
             countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
-            restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART", Depth.Foreground, Color.White) { Visible = false };
+            restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART STAGE", Depth.Foreground, Color.White) { Visible = false };
             leaderboardButton = new LeaderboardButton(this, new Container(new Margin(0.15f, 0.05f, 0.15f * 23f / 19f, 0.05f), MarginType.Absolute, Position.Right | Position.Bottom, Position.Right | Position.Bottom), Depth.Foreground) { Visible = false };
 
             countdown.Finished += ( ) => {
@@ -105,6 +105,7 @@ namespace Universal.UI.Screens {
                     i--;
                 }
             }
+            
 
             multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
             multiplierBar.Value = multiplier;
@@ -158,7 +159,7 @@ namespace Universal.UI.Screens {
 
         private void Next ( ) {
             int gold = (int)(mobs[0].Value * multiplier);
-            textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Top), Depth.Foreground, 0.075f, Color.Gold, "+"+gold.ToString( ), Label.TextAlignment.Center), 0.075f, 0.5f));
+            textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Top), Depth.Foreground, 0.075f, Color.Gold, "+" + gold.ToString( ), Label.TextAlignment.Center), 0.075f, 0.5f));
             Manager.State.Gold += gold;
 
             mobs.Insert(0, GetMob( ));

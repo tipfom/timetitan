@@ -16,9 +16,10 @@
   "map_floor": [ 16, 11, 1, 1 ],
 
   // target
-  "singletap": [ 18, 10, 20, 20 ],
-  "doubletap": [ 92, 10, 20, 20 ],
-  "pulltap": [ 114, 10, 18, 20 ],
+  "singletap": [ 167, 10, 32, 32 ],
+  "pulltap": [ 200, 10, 32, 32 ],
+  "doubletap1": [ 233, 10, 32, 32 ],
+  "doubletap2": [ 266, 10, 32, 32 ],
 
   // hearts
   "heart_full": [ 133, 10, 16, 16 ],

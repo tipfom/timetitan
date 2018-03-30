@@ -9,9 +9,7 @@ using Universal.World;
 
 namespace Universal.UI.Elements {
     public class TargetArea : Element {
-        private static readonly Color ACTIVE_SINGLETAP_COLOR = new Color(0, 204, 0, 255);
-        private static readonly Color ACTIVE_DOUBLETAP_COLOR = new Color(204, 204, 0, 255);
-        private static readonly Color[ ] PREVIEW_COLOR = new[ ] { new Color(144, 144, 144, 128), new Color(144, 144, 144, 32) };
+        private static readonly Color[ ] PREVIEW_COLOR = new[ ] { new Color(64, 64, 64, 128), new Color(64, 64, 64, 32) };
         private static readonly Color FAILED_COLOR = new Color(204, 0, 0, 255);
 
         public delegate void HitCallback (bool isHit, ChallengeType type);
@@ -81,14 +79,14 @@ namespace Universal.UI.Elements {
         private IEnumerable<RenderableElement> GetRenderableElement (TapChallenge challenge, int previewIndex = -1) {
             switch (challenge.Type) {
                 case ChallengeType.SingleTap:
-                    yield return new RenderableElement(((SingleTapChallenge)challenge).Box.Verticies, "singletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_SINGLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((SingleTapChallenge)challenge).Box.Verticies, "singletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? Color.White : FAILED_COLOR));
                     break;
                 case ChallengeType.DoubleTap:
-                    yield return new RenderableElement(((DoubleTapChallenge)challenge).Box.Verticies, "doubletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((DoubleTapChallenge)challenge).Box.Verticies, "doubletap" + ((DoubleTapChallenge)challenge).State, Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? Color.White : FAILED_COLOR));
                     break;
                 case ChallengeType.PullTap:
-                    yield return new RenderableElement(((PullTapChallenge)challenge).GoalBox.Verticies, "singletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
-                    yield return new RenderableElement(((PullTapChallenge)challenge).ScorerBox.Verticies, "pulltap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? ACTIVE_DOUBLETAP_COLOR : FAILED_COLOR));
+                    yield return new RenderableElement(((PullTapChallenge)challenge).GoalBox.Verticies, "singletap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? Color.White : FAILED_COLOR));
+                    yield return new RenderableElement(((PullTapChallenge)challenge).ScorerBox.Verticies, "pulltap", Depth, (previewIndex >= 0) ? PREVIEW_COLOR[previewIndex] : (active ? Color.White : FAILED_COLOR));
                     break;
             }
         }
