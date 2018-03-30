@@ -119,7 +119,7 @@ namespace Universal.UI.Screens {
             targetArea.Clear( );
 
             mobs.Clear( );
-            mobs.Add(new Plugger( ));
+            mobs.Add(GetMob( ));
 
             healthLeftBar.Max = mobs[0].Health;
             healthLeftBar.Value = mobs[0].Health;
@@ -159,7 +159,7 @@ namespace Universal.UI.Screens {
         }
 
         private void Next ( ) {
-            Manager.State.Gold += (int)(100 * multiplier);
+            Manager.State.Gold += (int)(mobs[0].Value * multiplier);
 
             mobs.Insert(0, GetMob( ));
             healthLeftBar.Max = mobs[0].Health;

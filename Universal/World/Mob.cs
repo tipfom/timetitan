@@ -16,8 +16,11 @@ namespace Universal.World {
         private int dyingEndTime;
 
         public float Health;
+        public float Value;
 
-        public Mob (EntitySpecies species) : base(species) {
+        public Mob (EntitySpecies species, float health, float value) : base(species) {
+            Health = health;
+            Value = value;
         }
 
         public void Die (Action<Mob> dyingFinishedCallback) {

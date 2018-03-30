@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Universal.World.Mobs {
     public class Octopus : Mob {
-        public Octopus ( ) : base(EntitySpecies.OCTOPUS) {
-            Health = 5;
+        public Octopus ( ) : base(EntitySpecies.OCTOPUS, 5, 75) {
         }
 
         public override IEnumerable<RenderableObject> Draw ( ) {

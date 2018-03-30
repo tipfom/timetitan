@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Universal.World.Mobs {
     public class Plugger : Mob {
-        public Plugger ( ) : base(EntitySpecies.PLUGGER) {
-            Health = 10;
+        public Plugger ( ) : base(EntitySpecies.PLUGGER, 10, 100) {
         }
 
         public override IEnumerable<RenderableObject> Draw ( ) {
