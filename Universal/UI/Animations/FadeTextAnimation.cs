@@ -17,8 +17,8 @@ namespace Universal.UI.Animations {
         }
 
         public override bool Update (DeltaTime dt) {
-            label.Container.Margin.Top -= speed * dt.TotalSeconds;
-            label.Color = new Color(label.Color.R, label.Color.G, label.Color.B, label.Color.A - alphaDecline * dt.TotalSeconds);
+            label.Container.Margin.Top -= speed * dt.Seconds;
+            label.Color = new Color(label.Color.R, label.Color.G, label.Color.B, label.Color.A - alphaDecline * dt.Seconds);
             return label.Color.A <= 0;
         }
     }

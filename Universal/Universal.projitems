@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\IBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\IndexBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Buffer\PrimitiveType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graphics\Animations\SpriteAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Framebuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Handle\AttributeHandle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graphics\Handle\TextureHandle.cs" />

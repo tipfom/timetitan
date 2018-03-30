@@ -108,7 +108,7 @@ namespace Universal.UI.Screens {
             }
 
             if (playing) {
-                multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
+                multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.Seconds));
                 multiplierBar.Value = multiplier;
             }
         }
@@ -179,6 +179,7 @@ namespace Universal.UI.Screens {
         }
 
         private Mob GetMob ( ) {
+            return new Octopus( );
             float random = Mathf.Random( );
             if (random < 0.4f) {
                 return new Plugger( );

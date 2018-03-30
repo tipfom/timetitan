@@ -28,7 +28,7 @@ namespace Universal.World {
             base.Update(deltaTime);
 
             if (attacking) {
-                frameTimeLeft -= deltaTime.TotalSeconds;
+                frameTimeLeft -= deltaTime.Seconds;
                 if (frameTimeLeft < 0) {
                     frameTimeLeft = TIME_BETWEEN_FRAMES;
                     current++;

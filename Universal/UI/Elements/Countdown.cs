@@ -28,7 +28,7 @@ namespace Universal.UI.Elements {
             base.Update(dt);
 
             if (timeLeft > 0) {
-                timeLeft -= dt.TotalSeconds;
+                timeLeft -= dt.Seconds;
                 if (timeLeft < 0) {
                     Visible = false;
                     Finished?.Invoke( );

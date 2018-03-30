@@ -31,7 +31,7 @@ namespace Universal.World {
 
         public override void Update (DeltaTime deltaTime) {
             if (dying) {
-                float delta = deltaTime.TotalMilliseconds / DEATH_DELAY;
+                float delta = deltaTime.Milliseconds / DEATH_DELAY;
                 fadePercentage -= delta;
                 offset += delta;
                 //Debug.Print(this, offset);
