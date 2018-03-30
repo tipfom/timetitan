@@ -18,12 +18,14 @@ namespace AndroidPlatform {
         Icon = "@drawable/armor256px",
         HardwareAccelerated = true,
         MainLauncher = true,
-        ResizeableActivity = true, 
+        ResizeableActivity = true,
         Immersive = true)]
     public class MainActivity : Activity {
         public View View;
 
         protected override void OnCreate (Bundle bundle) {
+            Android.Widget.Toast.MakeText(this, "ACHTUNG: Wenn du dachtest das Spiel wäre vorher schon Ultra-Alpha, dann hast du das noch nicht gespielt. Wird bald besser.", Android.Widget.ToastLength.Long).Show( );
+
             base.Window.DecorView.SystemUiVisibility = Constants.STATUS_BAR_VISIBILITY;
             base.Window.DecorView.SystemUiVisibilityChange += (sender, e) => {
                 if (Window.DecorView.SystemUiVisibility != Constants.STATUS_BAR_VISIBILITY)
