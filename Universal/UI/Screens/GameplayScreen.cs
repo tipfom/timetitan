@@ -32,6 +32,7 @@ namespace Universal.UI.Screens {
         private ChangeNumericTextAnimation goldLabelAnimation;
 
         private float multiplier = 1f;
+        private bool playing;
 
         public override void Load ( ) {
             base.Load( );
@@ -105,10 +106,11 @@ namespace Universal.UI.Screens {
                     i--;
                 }
             }
-            
 
-            multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
-            multiplierBar.Value = multiplier;
+            if (playing) {
+                multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.TotalSeconds));
+                multiplierBar.Value = multiplier;
+            }
         }
 
         private void Prepare ( ) {
@@ -126,10 +128,12 @@ namespace Universal.UI.Screens {
 
         private void Start ( ) {
             targetArea.Start( );
+            playing = true;
         }
 
         private void GameOver ( ) {
             targetArea.Stop( );
+            playing = false;
 
             stageProgressBar.Value = 1;
             restartButton.Visible = true;
