@@ -27,7 +27,7 @@ namespace Universal.UI.Screens {
         private Button restartButton;
         private LeaderboardButton leaderboardButton;
         private HeartViewer heartViewer;
-        private List<Label> damageLabel = new List<Label>( );
+        private List<FadeTextAnimation> textAnimations = new List<FadeTextAnimation>( );
 
         private ChangeNumericTextAnimation goldLabelAnimation;
 
@@ -99,11 +99,9 @@ namespace Universal.UI.Screens {
                 }
             }
 
-            for (int i = 0; i < damageLabel.Count; i++) {
-                damageLabel[i].Container.Margin.Top -= 0.05f * dt.TotalSeconds;
-                damageLabel[i].Color = new Color(damageLabel[i].Color.R, damageLabel[i].Color.G, damageLabel[i].Color.B, damageLabel[i].Color.A - 0.75f * dt.TotalSeconds);
-                if (damageLabel[i].Color.A <= 0) {
-                    damageLabel.RemoveAt(i);
+            for (int i = 0; i < textAnimations.Count; i++) {
+                if (textAnimations[i].Update(dt)) {
+                    textAnimations.RemoveAt(i);
                     i--;
                 }
             }
@@ -141,7 +139,7 @@ namespace Universal.UI.Screens {
             if (isHit) {
                 player.Attack( );
                 float damage = player.GetDamage(type);
-                damageLabel.Add(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Top), 0.05f, damage.ToString( ), Label.TextAlignment.Center));
+                textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Top), 0.05f, damage.ToString( ), Label.TextAlignment.Center), 0.05f, 0.75f));
                 if ((mobs[0].Health -= damage) < 0) {
                     mobs[0].Die(null);
 
@@ -159,7 +157,9 @@ namespace Universal.UI.Screens {
         }
 
         private void Next ( ) {
-            Manager.State.Gold += (int)(mobs[0].Value * multiplier);
+            int gold = (int)(mobs[0].Value * multiplier);
+            textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Top), Depth.Foreground, 0.075f, Color.Gold, "+"+gold.ToString( ), Label.TextAlignment.Center), 0.075f, 0.5f));
+            Manager.State.Gold += gold;
 
             mobs.Insert(0, GetMob( ));
             healthLeftBar.Max = mobs[0].Health;

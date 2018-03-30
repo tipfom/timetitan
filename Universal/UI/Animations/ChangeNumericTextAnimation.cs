@@ -5,7 +5,7 @@ using System.Text;
 using Universal.UI.Elements;
 
 namespace Universal.UI.Animations {
-    public class ChangeNumericTextAnimation {
+    public class ChangeNumericTextAnimation : Animation {
         private Label label;
         private int start;
         private int finish;
@@ -19,7 +19,7 @@ namespace Universal.UI.Animations {
             this.totalTime = seconds;
         }
 
-        public bool Update (DeltaTime dt) {
+        public override bool Update (DeltaTime dt) {
             progress = Mathf.Clamp01(progress + dt.TotalSeconds / totalTime);
             label.Text = ((int)(start + (finish - start) * progress)).ToString( );
             return progress == 1f;
