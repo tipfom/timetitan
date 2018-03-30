@@ -85,7 +85,7 @@ namespace Universal.Data {
         }
 
         private async void UpdateCloudCopy ( ) {
-            if (IsCloudUpdateRequired && !Syncing) {
+            if (IsCloudUpdateRequired && !Syncing && (DatabaseProvider.GoogleApiClient?.IsConnected ?? false)) {
                 Syncing = true;
                 IsCloudUpdateRequired = false;
 #if __ANDROID__
