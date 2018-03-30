@@ -17,7 +17,7 @@ namespace Universal.World {
 
         public float Health;
 
-        public Mob (int species) : base(species) {
+        public Mob (EntitySpecies species) : base(species) {
         }
 
         public void Die (Action<Mob> dyingFinishedCallback) {

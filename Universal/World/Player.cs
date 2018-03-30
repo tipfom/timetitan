@@ -15,7 +15,7 @@ namespace Universal.World {
 
         public float BaseDamage = 2.3f;
 
-        public Player ( ) : base(Entity.PLAYER) {
+        public Player ( ) : base(EntitySpecies.PLAYER) {
 
         }
 

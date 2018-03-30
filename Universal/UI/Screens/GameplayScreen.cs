@@ -161,7 +161,7 @@ namespace Universal.UI.Screens {
         private void Next ( ) {
             Manager.State.Gold += (int)(100 * multiplier);
 
-            mobs.Insert(0, new Plugger( ));
+            mobs.Insert(0, GetMob( ));
             healthLeftBar.Max = mobs[0].Health;
             healthLeftBar.Value = mobs[0].Health;
 
@@ -170,6 +170,17 @@ namespace Universal.UI.Screens {
                 stageProgressBar.Value = 1;
                 Manager.State.Stage++;
                 heartViewer.Active = heartViewer.Count;
+            }
+        }
+
+        private Mob GetMob ( ) {
+            float random = Mathf.Random( );
+            if (random < 0.4f) {
+                return new Plugger( );
+            } else if (random < 0.7f) {
+                return new Octopus( );
+            } else {
+                return new Chest( );
             }
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Universal.World.Mobs {
     public class Plugger : Mob {
-        public Plugger ( ) : base(Entity.PLUGGER) {
+        public Plugger ( ) : base(EntitySpecies.PLUGGER) {
             Health = 10;
         }
     }
