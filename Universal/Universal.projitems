@@ -50,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\UpdateAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\CoinLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Countdown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Label.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\LeaderboardButton.cs" />
