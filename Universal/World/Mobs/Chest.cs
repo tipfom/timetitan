@@ -10,7 +10,7 @@ namespace Universal.World.Mobs {
 
         public override IEnumerable<RenderableObject> Draw ( ) {
             float top = 1.5f + offset;
-            yield return new RenderableObject(new float[ ] { -1.5f, top, -1.5f, offset, 0f, offset, 0f, top }, "body", GetColor( ));
+            yield return new RenderableObject(new float[ ] { -0.75f, top, -0.75f, offset, 0.75f, offset, 0.75f, top }, "body", GetColor( ));
         }
     }
 }

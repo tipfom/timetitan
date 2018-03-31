@@ -19,7 +19,7 @@ namespace Universal.World.Mobs {
 
         public override IEnumerable<RenderableObject> Draw ( ) {
             float top = 1f + offset;
-            yield return new RenderableObject(new float[ ] { -1f, top, -1f, offset, 0f, offset, 0f, top }, spriteAnimation.Texture, GetColor( ));
+            yield return new RenderableObject(new float[ ] { -0.5f, top, -0.5f, offset, 0.5f, offset, 0.5f, top }, spriteAnimation.Texture, GetColor( ));
         }
     }
 }

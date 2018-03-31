@@ -81,7 +81,6 @@ namespace Universal.UI.Screens {
         public override void Draw ( ) {
             base.Draw( );
 
-            EntityRenderer.Draw(player, map.PlayerPosition);
             foreach (Mob mob in mobs)
                 EntityRenderer.Draw(mob, map.MobPosition);
         }
@@ -179,11 +178,8 @@ namespace Universal.UI.Screens {
         }
 
         private Mob GetMob ( ) {
-            return new Octopus( );
             float random = Mathf.Random( );
-            if (random < 0.4f) {
-                return new Plugger( );
-            } else if (random < 0.7f) {
+            if (random < 0.7f) {
                 return new Octopus( );
             } else {
                 return new Chest( );
