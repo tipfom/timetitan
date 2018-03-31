@@ -24,14 +24,13 @@ namespace Universal.UI.Screens {
         private ProgressBar stageProgressBar;
         private ProgressBar healthLeftBar;
         private Countdown countdown;
-        private Button restartButton;
-        private LeaderboardButton leaderboardButton;
-        private HeartViewer heartViewer;
         private List<FadeTextAnimation> textAnimations = new List<FadeTextAnimation>( );
 
         private ChangeNumericTextAnimation goldLabelAnimation;
 
-        private float multiplier = 1f;
+        private float _multiplier = 1f;
+        private float multiplier { get { return _multiplier; } set { _multiplier = Math.Max(1f, value); } }
+
         private bool playing;
 
         public override void Load ( ) {
@@ -44,8 +43,6 @@ namespace Universal.UI.Screens {
             stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 5, Value = 1 };
             multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
             healthLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = 1, Value = 1, Color = new Color(255, 20, 20, 255) };
-
-            heartViewer = new HeartViewer(this, new Container(new Margin(0.025f, 0.09f, 0.0125f, 0.09f), MarginType.Absolute, dock: Position.Bottom | Position.Left, relative: multiplierBar), Depth.Foreground, 3);
 
             Label goldLabel = new Label(this, new Container(new Margin(0, 0.025f), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Bottom, relative: multiplierBar), Depth.Foreground, 0.05f, Color.Gold, Manager.State.Gold.ToString( ), Label.TextAlignment.Left);
             Manager.State.GoldChanged += (newGold) => {
@@ -60,18 +57,11 @@ namespace Universal.UI.Screens {
             targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center, ChallengeProgressCallback, GetTapChallenge);
 
             countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
-            restartButton = new Button(this, new Container(new Margin(0.2f, 0.6f, 0.6f, 0.2f), MarginType.Relative), "RESTART STAGE", Depth.Foreground, Color.White) { Visible = false };
-            leaderboardButton = new LeaderboardButton(this, new Container(new Margin(0.15f, 0.05f, 0.15f * 23f / 19f, 0.05f), MarginType.Absolute, Position.Right | Position.Bottom, Position.Right | Position.Bottom), Depth.Foreground) { Visible = false };
-
+            
             countdown.Finished += ( ) => {
                 Start( );
             };
-
-            restartButton.Release += ( ) => {
-                Prepare( );
-                countdown.Start( );
-            };
-
+            
             EntityRenderer.VertexSize = map.Container.Height / 3f;
 
             Prepare( );
@@ -107,15 +97,12 @@ namespace Universal.UI.Screens {
             }
 
             if (playing) {
-                multiplier = Math.Max(1, multiplier * (float)Math.Pow(MULTIPLIER_DECLINE, dt.Seconds));
+                multiplier *= (float)Math.Pow(MULTIPLIER_DECLINE, dt.Seconds);
                 multiplierBar.Value = multiplier;
             }
         }
 
         private void Prepare ( ) {
-            restartButton.Visible = false;
-            leaderboardButton.Visible = false;
-            heartViewer.Active = heartViewer.Count;
             targetArea.Clear( );
 
             mobs.Clear( );
@@ -130,14 +117,14 @@ namespace Universal.UI.Screens {
             playing = true;
         }
 
-        private void GameOver ( ) {
-            targetArea.Stop( );
-            playing = false;
+        //private void GameOver ( ) {
+        //    targetArea.Stop( );
+        //    playing = false;
 
-            stageProgressBar.Value = 1;
-            restartButton.Visible = true;
-            leaderboardButton.Visible = true;
-        }
+        //    stageProgressBar.Value = 1;
+        //    restartButton.Visible = true;
+        //    leaderboardButton.Visible = true;
+        //}
 
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
@@ -153,10 +140,11 @@ namespace Universal.UI.Screens {
                 healthLeftBar.Value = mobs[0].Health;
                 multiplier += 0.2f;
             } else {
-                heartViewer.Active--;
-                if (heartViewer.Active == 0) {
-                    GameOver( );
-                }
+                // heartViewer.Active--;
+                // if (heartViewer.Active == 0) {
+                //     GameOver( );
+                // }
+                multiplier -= 0.5f;
             }
         }
 
@@ -173,7 +161,6 @@ namespace Universal.UI.Screens {
             if (stageProgressBar.Value > stageProgressBar.Max) {
                 stageProgressBar.Value = 1;
                 Manager.State.Stage++;
-                heartViewer.Active = heartViewer.Count;
             }
         }
 
