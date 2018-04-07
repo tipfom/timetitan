@@ -9,7 +9,7 @@ namespace Universal.World.Mobs {
     public class Octopus : Mob {
         private SpriteAnimation spriteAnimation = new SpriteAnimation("animations/octopus.txt");
 
-        public Octopus ( ) : base(EntitySpecies.OCTOPUS, 5, 75) {
+        public Octopus ( ) : base(MobType.OCTOPUS, 5, 75) {
         }
 
         public override void Update (DeltaTime dt) {

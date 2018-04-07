@@ -77,12 +77,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Touch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Element.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\ChallengeType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)World\Entity.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)World\EntitySpecies.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)World\MobType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Mob.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Mobs\Chest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)World\Mobs\Octopus.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)World\Mobs\Plugger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)World\Player.cs" />
   </ItemGroup>
 </Project>

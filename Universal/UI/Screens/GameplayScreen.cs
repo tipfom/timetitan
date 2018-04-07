@@ -15,7 +15,6 @@ namespace Universal.UI.Screens {
     public class GameplayScreen : Screen {
         public const float MULTIPLIER_DECLINE = 0.9f;
 
-        private Player player;
         private List<Mob> mobs = new List<Mob>( );
 
         private Map map;
@@ -36,9 +35,7 @@ namespace Universal.UI.Screens {
 
         public override void Load ( ) {
             base.Load( );
-
-            player = new Player( );
-
+            
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), -10);
 
             stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), 10) { Max = 5, Value = 1 };
@@ -79,7 +76,6 @@ namespace Universal.UI.Screens {
         public override void Update (DeltaTime dt) {
             base.Update(dt);
 
-            player.Update(dt);
             foreach (Mob mob in mobs) {
                 mob.Update(dt);
             }
@@ -125,8 +121,7 @@ namespace Universal.UI.Screens {
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
                 swoosh.Appear( );
-                player.Attack( );
-                float damage = player.GetDamage(type);
+                float damage = 2.3f;
                 textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Right | Position.Top, relative: damageLabelAligner), 0.05f, damage.ToString( ), alignment: Label.TextAlignment.Center), 0.05f, 0.75f));
                 if ((mobs[0].Health -= damage) < 0) {
                     mobs[0].Die(null);
