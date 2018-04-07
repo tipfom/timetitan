@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Animations\ChangeNumericTextAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Animations\FadeTextAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Depth.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Aligner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\UpdateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\CoinLabel.cs" />
