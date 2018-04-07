@@ -9,10 +9,10 @@ using System.Threading;
 
 namespace Universal.Data {
     public class LocalCopyState : IDisposable {
-        public const int VERSION = 1;
         public const int SECONDS_BETWEEN_CLOUDUPDATES = 100;
         public const string DATABASE_GOLD_KEY = "gold";
         public const string DATABASE_STAGE_KEY = "stage";
+        public const string DATABASE_DAMAGE_KEY = "damage";
         public const string DATABASE_LAST_SYNCED_TIMESTAMP = "lstimestamp";
 
         public long LastSyncedTimestamp { get; private set; }
@@ -45,6 +45,20 @@ namespace Universal.Data {
             }
         }
 
+        public event Action<float> DamageChanged;
+        private float _Damage;
+        public float Damage {
+            get { return _Damage; }
+            set {
+                if (_Damage != value) {
+                    _Damage = value;
+                    DatabaseProvider.Write(DATABASE_DAMAGE_KEY, _Damage);
+                    IsCloudUpdateRequired = true;
+                    DamageChanged?.Invoke(value);
+                }
+            }
+        }
+
         public readonly IDatabaseProvider DatabaseProvider;
         private Timer updateCloudCopyTimer;
 
@@ -57,6 +71,8 @@ namespace Universal.Data {
 
             _Gold = DatabaseProvider.ReadLong(DATABASE_GOLD_KEY);
             _Stage = DatabaseProvider.ReadLong(DATABASE_STAGE_KEY);
+            _Damage = DatabaseProvider.ReadFloat(DATABASE_DAMAGE_KEY, 2.3f);
+
             LastSyncedTimestamp = DatabaseProvider.ReadLong(DATABASE_LAST_SYNCED_TIMESTAMP);
 
             updateCloudCopyTimer = new Timer(new TimerCallback((o) => UpdateCloudCopy( )), null, Timeout.Infinite, Timeout.Infinite);
@@ -69,7 +85,7 @@ namespace Universal.Data {
         private async void Sync ( ) {
             ISnapshot snapshot = await CloudCopyState.GetSnapshot(DatabaseProvider.GoogleApiClient);
             CloudCopyState cloudCopyState = new CloudCopyState(snapshot);
-            if (cloudCopyState.Timestamp < LastSyncedTimestamp || cloudCopyState.Stage < Stage) {
+            if (cloudCopyState.Timestamp < LastSyncedTimestamp || cloudCopyState.Damage < Damage || cloudCopyState.Stage < Stage) {
                 IsCloudUpdateRequired = true;
                 UpdateCloudCopy( );
             } else {
@@ -85,11 +101,11 @@ namespace Universal.Data {
         }
 
         private async void UpdateCloudCopy ( ) {
-            if (IsCloudUpdateRequired && !Syncing) {
+            if (IsCloudUpdateRequired && !Syncing && (DatabaseProvider.GoogleApiClient?.IsConnected ?? false)) {
                 Syncing = true;
                 IsCloudUpdateRequired = false;
 #if __ANDROID__
-                LastSyncedTimestamp = await CloudCopyState.Update(Gold, Stage, DatabaseProvider.GoogleApiClient);
+                LastSyncedTimestamp = await CloudCopyState.Update(Gold, Stage, Damage, DatabaseProvider.GoogleApiClient);
                 DatabaseProvider.Write(DATABASE_LAST_SYNCED_TIMESTAMP, LastSyncedTimestamp);
 #endif
                 Syncing = false;

@@ -3,25 +3,25 @@
 namespace Core {
     public struct DeltaTime {
         public static DeltaTime operator * (DeltaTime dt, float scale) {
-            return new DeltaTime(dt.TotalMilliseconds * scale);
+            return new DeltaTime(dt.Milliseconds * scale);
         }
 
-        public float TotalSeconds;
-        public float TotalMilliseconds;
+        public float Seconds;
+        public float Milliseconds;
 
         public DeltaTime (float seconds, float milliseconds) {
-            TotalSeconds = seconds + milliseconds / 1000f;
-            TotalMilliseconds = seconds * 1000f + milliseconds;
+            Seconds = seconds + milliseconds / 1000f;
+            Milliseconds = seconds * 1000f + milliseconds;
         }
 
         public DeltaTime (float milliseconds) {
-            TotalMilliseconds = milliseconds;
-            TotalSeconds = milliseconds / 1000f;
+            Milliseconds = milliseconds;
+            Seconds = milliseconds / 1000f;
         }
 
         public DeltaTime (TimeSpan span) {
-            TotalMilliseconds = (float)span.TotalMilliseconds;
-            TotalSeconds = (float)span.TotalSeconds;
+            Milliseconds = (float)span.TotalMilliseconds;
+            Seconds = (float)span.TotalSeconds;
         }
     }
 }

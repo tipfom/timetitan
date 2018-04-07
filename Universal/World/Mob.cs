@@ -5,7 +5,7 @@ using Core;
 using Core.Graphics;
 
 namespace Universal.World {
-    public abstract class Mob : Entity {
+    public abstract class Mob {
         public const int DEATH_DELAY = 1000;
 
         protected float offset = 0f;
@@ -15,12 +15,14 @@ namespace Universal.World {
         private Action<Mob> deadCallback;
         private int dyingEndTime;
 
+        public MobType Type;
         public float Health;
         public float Value;
 
-        public Mob (EntitySpecies species, float health, float value) : base(species) {
-            Health = health;
+        public Mob (MobType type, float baseHealth, float value, long stage) {
+            Health = baseHealth * (float)Math.Pow(1.025, stage);
             Value = value;
+            Type = type;
         }
 
         public void Die (Action<Mob> dyingFinishedCallback) {
@@ -29,9 +31,11 @@ namespace Universal.World {
             dying = true;
         }
 
-        public override void Update (DeltaTime deltaTime) {
+        public abstract IEnumerable<RenderableObject> Draw ( );
+
+        public virtual void Update (DeltaTime deltaTime) {
             if (dying) {
-                float delta = deltaTime.TotalMilliseconds / DEATH_DELAY;
+                float delta = deltaTime.Milliseconds / DEATH_DELAY;
                 fadePercentage -= delta;
                 offset += delta;
                 //Debug.Print(this, offset);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Android.Views;
 using Core;
+using Universal;
 using Universal.Graphics.Renderer;
 using Universal.UI;
 using Window = Universal.Graphics.Window;
@@ -25,8 +26,8 @@ namespace AndroidPlatform {
                         Touch touch = new Touch(pointerId, new Vector2(e.GetX(pointerIndex), e.GetY(pointerIndex)));
                         activeTouches.Add(touch);
 
-                        for(int i = 0; i< UIRenderer.Current.Count; i++) {
-                            Element item = UIRenderer.Current[i];
+                        for(int i = 0; i< Screen.Active.Elements.Count; i++) {
+                            Element item = Screen.Active.Elements[i];
                             if (item.Collides(touch.RelativePosition) && item.HandleTouch(Touch.Action.Begin, touch)) {
                                 break;
                             }
@@ -39,8 +40,8 @@ namespace AndroidPlatform {
                     // user lifted the finger of the screen
                     int touchIndex = activeTouches.FindIndex((Touch touch) => touch.ID == pointerId);
                     if (touchIndex != -1) {
-                        for (int i = 0; i < UIRenderer.Current.Count; i++) {
-                            Element item = UIRenderer.Current[i];
+                        for (int i = 0; i < Screen.Active.Elements.Count; i++) {
+                            Element item = Screen.Active.Elements[i];
                             if (item.Collides(activeTouches[touchIndex].RelativePosition) && item.HandleTouch(Touch.Action.End, activeTouches[touchIndex])) {
                                 break;
                             }
@@ -56,8 +57,8 @@ namespace AndroidPlatform {
                         if (activeTouches[i].Position - activeTouchPosition != Vector2.Zero) {
                             // touch moved
                             Vector2 activeTouchRelativePosition = new Vector2((activeTouchPosition.X / Window.Size.Width - 0.5f) * 2 * Window.Ratio, (activeTouchPosition.Y / Window.Size.Height - 0.5f) * -2);
-                            for (int j = 0; j < UIRenderer.Current.Count; j++) {
-                                Element item = UIRenderer.Current[j];
+                            for (int j = 0; j < Screen.Active.Elements.Count; j++) {
+                                Element item = Screen.Active.Elements[j];
 
                                 bool current = item.Collides(activeTouchRelativePosition);
                                 bool last = item.Collides(activeTouches[i].RelativePosition);
@@ -65,8 +66,8 @@ namespace AndroidPlatform {
                                 if (current && !last) {
                                     // collides with the current position, but not with the last
                                     if (item.HandleTouch(Touch.Action.Enter, activeTouches[i])) {
-                                        for(int k = j+1; k < UIRenderer.Current.Count; k++) {
-                                            Element kitem = UIRenderer.Current[k];
+                                        for(int k = j+1; k < Screen.Active.Elements.Count; k++) {
+                                            Element kitem = Screen.Active.Elements[k];
                                             if (kitem.Collides(activeTouches[i].RelativePosition)) {
                                                 kitem.HandleTouch(Touch.Action.Leave, activeTouches[i]);
                                             }
@@ -75,8 +76,8 @@ namespace AndroidPlatform {
                                 } else if (!current && last) {
                                     // collides with the last position, but not with the current -> touch moved out of UIelement
                                     if(item.HandleTouch(Touch.Action.Leave, activeTouches[i])) {
-                                        for (int k = j + 1; k < UIRenderer.Current.Count; k++) {
-                                            Element kitem = UIRenderer.Current[k];
+                                        for (int k = j + 1; k < Screen.Active.Elements.Count; k++) {
+                                            Element kitem = Screen.Active.Elements[k];
                                             if (kitem.Collides(activeTouchRelativePosition)) {
                                                 kitem.HandleTouch(Touch.Action.Enter, activeTouches[i]);
                                                 break;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core;
 using Universal.Graphics.Renderer;
 using Universal.UI.Layout;
+using static Universal.Graphics.Renderer.UIRenderer;
 
 namespace Universal.UI {
     public abstract class Element : IDisposable {
@@ -26,13 +27,17 @@ namespace Universal.UI {
 
         public readonly Screen Screen;
 
+        private static int latestID = 1;
+        public readonly int ID;
+
         public Element(Screen owner, Container container, int depth, bool multiclick = false) {
             Screen = owner;
+            Screen.AddElement(this);
+            ID = latestID++;
 
             this.multiClick = multiclick;
             this._Depth = depth;
             this.Container = container;
-            UIRenderer.Add(owner, this);
 
             Container.Initialize(this);
             Container.UpdateRequired += ( ) => IsDirty = true;
@@ -75,14 +80,17 @@ namespace Universal.UI {
                 if (Container.IsDirty) {
                     Container.Refresh( );
                 }
-                UIRenderer.Update(this);
+                SharedRenderer.RequestUpdate(this);
                 IsDirty = false;
             }
         }
 
         public virtual void Dispose( ) {
-            UIRenderer.Remove(this);
         }
+
+        //public override int GetHashCode ( ) {
+        //    return ID;
+        //}
 
         public abstract IEnumerable<RenderableElement> Draw( );
     }

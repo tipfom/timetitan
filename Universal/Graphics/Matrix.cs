@@ -12,14 +12,14 @@ namespace Universal.Graphics {
         private Matrix4 _MVP;
         public Matrix4 MVP { get { return _MVP; } }
 
-        public Matrix (Vector2 projectionsize) {
+        public Matrix (Vector2 projectionsize, float zNear = -1, float zFar = 3f) {
             ResetView( );
-            UpdateProjection(projectionsize);
+            UpdateProjection(projectionsize, zNear, zFar);
             CalculateMVP( );
         }
 
-        public void UpdateProjection (Vector2 projectionsize) {
-            _Projection = Matrix4.CreateOrthographicOffCenter(-projectionsize.X, projectionsize.X, -projectionsize.Y, projectionsize.Y, -1, 3);
+        public void UpdateProjection (Vector2 projectionsize, float zNear = -1, float zFar = 3f) {
+            _Projection = Matrix4.CreateOrthographicOffCenter(-projectionsize.X, projectionsize.X, -projectionsize.Y, projectionsize.Y, zNear, zFar);
         }
 
         public void CalculateMVP ( ) {
