@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Panel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\PlayButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\ProgressBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Swoosh.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TargetArea.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\DoubleTapChallenge.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Challenges\PullTapChallenge.cs" />

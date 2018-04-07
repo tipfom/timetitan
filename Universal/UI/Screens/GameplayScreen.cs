@@ -26,6 +26,7 @@ namespace Universal.UI.Screens {
         private Countdown countdown;
         private Aligner goldLabelAligner;
         private Aligner damageLabelAligner;
+        private Swoosh swoosh;
         private List<FadeTextAnimation> textAnimations = new List<FadeTextAnimation>( );
 
         private float _multiplier = 1f;
@@ -46,6 +47,8 @@ namespace Universal.UI.Screens {
 
             goldLabelAligner = new Aligner(this, new Container(new Margin(0.2f, 0f, 0f, 0f), MarginType.Absolute, Position.Left | Position.Top, Position.Left | Position.Top));
             damageLabelAligner = new Aligner(this, new Container(new Margin(0, 0.2f, 0f, 0f), MarginType.Absolute, Position.Right | Position.Top, Position.Right | Position.Top));
+
+            swoosh = new Swoosh(this, new Container(new Margin(0.4f, 0.4f, 0.05f, 0.6f), MarginType.Absolute, Position.Top, Position.Top), 1);
 
             CoinLabel goldLabel = new CoinLabel(this, new Container(new Margin(0, 0.025f), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Bottom, relative: multiplierBar), 0.05f, 75, Label.TextAlignment.Left);
 
@@ -121,6 +124,7 @@ namespace Universal.UI.Screens {
 
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
+                swoosh.Appear( );
                 player.Attack( );
                 float damage = player.GetDamage(type);
                 textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Right | Position.Top, relative: damageLabelAligner), 0.05f, damage.ToString( ), alignment: Label.TextAlignment.Center), 0.05f, 0.75f));
