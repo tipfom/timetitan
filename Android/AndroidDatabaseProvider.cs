@@ -111,12 +111,23 @@ namespace AndroidPlatform {
             }
         }
 
+        public void Write (string key, float value) {
+            using (ISharedPreferencesEditor editor = localStateDatabase.Edit( )) {
+                editor.PutFloat(key, value);
+                editor.Commit( );
+            }
+        }
+
         public string ReadString (string key, string defaultValue = null) {
             return localStateDatabase.GetString(key, defaultValue);
         }
 
         public long ReadLong (string key, long defaultValue = 0) {
             return localStateDatabase.GetLong(key, defaultValue);
+        }
+
+        public float ReadFloat (string key, float defaultValue = 0) {
+            return localStateDatabase.GetFloat(key, defaultValue);
         }
 
         public new void Dispose ( ) {

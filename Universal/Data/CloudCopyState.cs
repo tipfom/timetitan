@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace Universal.Data {
     public class CloudCopyState {
-        public const int VERSION = 2;
-        public const int BUFFER_LENGTH = 1 * sizeof(int) + 2 * sizeof(long);
+        public const int VERSION = 3;
+        public const int BUFFER_LENGTH = 1 * sizeof(int) + 2 * sizeof(long) + 1 * sizeof(float);
         public const string SNAPSHOT_NAME = "beta_snapshot";
 
         public readonly string ID;
         public readonly long Timestamp;
         public readonly long Gold = -1;
         public readonly long Stage = 0;
+        public readonly float Damage = 2.3f;
 
         public CloudCopyState (ISnapshot snapshot) : this(snapshot.SnapshotContents.ReadFully( ), snapshot.Metadata.SnapshotId, snapshot.Metadata.LastModifiedTimestamp) {
         }
@@ -35,13 +36,20 @@ namespace Universal.Data {
                             Gold = binaryReader.ReadInt64( );
                             Stage = binaryReader.ReadInt64( );
                             break;
+                        case 3:
+                            Gold = binaryReader.ReadInt64( );
+                            Stage = binaryReader.ReadInt64( );
+                            Damage = binaryReader.ReadSingle( );
+                            break;
                     }
                 }
             }
         }
 
         public bool IsAhead (CloudCopyState conflictingState) {
-            if (Stage > conflictingState.Stage) {
+            if (Damage > conflictingState.Damage) {
+                return true;
+            } else if (Stage > conflictingState.Stage) {
                 return true;
             } else if (Stage < conflictingState.Stage) {
                 return false;
@@ -51,26 +59,27 @@ namespace Universal.Data {
             return false;
         }
 
-        public static byte[ ] GetData (long Gold, long Stage) {
+        public static byte[ ] GetData (long Gold, long Stage, float Damage) {
             byte[ ] data = new byte[BUFFER_LENGTH];
             using (MemoryStream memoryStream = new MemoryStream(data)) {
                 using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream)) {
                     binaryWriter.Write(VERSION);
                     binaryWriter.Write(Gold);
                     binaryWriter.Write(Stage);
+                    binaryWriter.Write(Damage);
                 }
             }
             return data;
         }
 
-        public async static Task<long> Update (long Gold, long Stage, GoogleApiClient googleApiClient) {
+        public async static Task<long> Update (long Gold, long Stage, float Damage, GoogleApiClient googleApiClient) {
             ISnapshot snapshot = await GetSnapshot(googleApiClient);
 
-            snapshot.SnapshotContents.WriteBytes(CloudCopyState.GetData(Gold, Stage));
+            snapshot.SnapshotContents.WriteBytes(CloudCopyState.GetData(Gold, Stage, Damage));
 
             SnapshotMetadataChangeBuilder metadataChangeBuilder = new SnapshotMetadataChangeBuilder( );
             metadataChangeBuilder.SetCoverImage(Assets.Icon);
-            metadataChangeBuilder.SetDescription($"Time Titan Stage {Stage}, {Gold} Gold");
+            metadataChangeBuilder.SetDescription($"Time Titan Stage {Stage}, {Gold} Gold, {Damage} Damage");
             metadataChangeBuilder.SetProgressValue(Stage);
             ISnapshotMetadataChange metadataChange = metadataChangeBuilder.Build( );
 

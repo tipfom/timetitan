@@ -121,7 +121,7 @@ namespace Universal.UI.Screens {
         private void ChallengeProgressCallback (bool isHit, ChallengeType type) {
             if (isHit) {
                 swoosh.Appear( );
-                float damage = 2.3f;
+                float damage = Manager.State.Damage;
                 textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Right | Position.Top, relative: damageLabelAligner), 0.05f, damage.ToString( ), alignment: Label.TextAlignment.Center), 0.05f, 0.75f));
                 if ((mobs[0].Health -= damage) < 0) {
                     mobs[0].Die(null);
