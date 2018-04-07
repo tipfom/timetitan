@@ -23,8 +23,7 @@ namespace Universal {
             LineProgram.Init( );
 
             //LightManager.Init( );
-            UIRenderer.Init( );
-            UIRenderer.Texture = Assets.GetSprite("interface");
+            UIRenderer.SharedRenderer = new UIRenderer(Assets.GetSprite("interface"));
             EntityRenderer.Init( );
 
 #if __ANDROID__
@@ -56,7 +55,7 @@ namespace Universal {
         public static void Destroy ( ) {
             Assets.Destroy( );
             Screen.MainMenu.Dispose( );
-            UIRenderer.Dispose( );
+            UIRenderer.SharedRenderer.Dispose( );
             //LightManager.Destroy( );
             State.Dispose( );
 

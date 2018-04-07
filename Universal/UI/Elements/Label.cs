@@ -12,11 +12,11 @@ namespace Universal.UI.Elements {
         private static Dictionary<char, float> charScales = new Dictionary<char, float>( ) { [' '] = 1f };
 
         static Label ( ) {
-            foreach (string entry in UIRenderer.Texture.Sprites( )) {
+            foreach (string entry in UIRenderer.SharedRenderer.Texture.Sprites( )) {
                 char entryCharacter;
                 if (char.TryParse(entry, out entryCharacter)) {
-                    float[ ] verticies = UIRenderer.Texture[entry];
-                    float scale = ((verticies[4] - verticies[0]) * UIRenderer.Texture.Width) / ((verticies[3] - verticies[1]) * UIRenderer.Texture.Height);
+                    float[ ] verticies = UIRenderer.SharedRenderer.Texture[entry];
+                    float scale = ((verticies[4] - verticies[0]) * UIRenderer.SharedRenderer.Texture.Width) / ((verticies[3] - verticies[1]) * UIRenderer.SharedRenderer.Texture.Height);
                     charScales.Add(entryCharacter, scale);
                 }
             }
@@ -40,10 +40,10 @@ namespace Universal.UI.Elements {
 
         readonly float charSize;
 
-        public Label (Screen owner, Container layout, float size, string text, int depth = UI.Depth.Center, TextAlignment alignment = TextAlignment.Left) : this(owner, layout, size, text, Color.White, depth, alignment) {
+        public Label (Screen owner, Container layout, float size, string text, int depth = 0, TextAlignment alignment = TextAlignment.Left) : this(owner, layout, size, text, Color.White, depth, alignment) {
         }
 
-        public Label (Screen owner, Container layout, float size, string text, Color color, int depth = UI.Depth.Center, TextAlignment alignment = TextAlignment.Left) : base(owner, layout, depth) {
+        public Label (Screen owner, Container layout, float size, string text, Color color, int depth = 0, TextAlignment alignment = TextAlignment.Left) : base(owner, layout, depth) {
             charSize = size;
             Text = text;
             Color = color;

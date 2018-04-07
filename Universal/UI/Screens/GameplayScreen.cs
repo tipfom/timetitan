@@ -38,25 +38,25 @@ namespace Universal.UI.Screens {
 
             player = new Player( );
 
-            map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), Depth.Center);
+            map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), -10);
 
-            stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 5, Value = 1 };
-            multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
-            healthLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = 1, Value = 1, Color = new Color(255, 20, 20, 255) };
+            stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), 10) { Max = 5, Value = 1 };
+            multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), 50) { Max = 10, Value = multiplier, Color = Color.Gold };
+            healthLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), 50) { Max = 1, Value = 1, Color = new Color(255, 20, 20, 255) };
 
             goldLabelAligner = new Aligner(this, new Container(new Margin(0.2f, 0f, 0f, 0f), MarginType.Absolute, Position.Left | Position.Top, Position.Left | Position.Top));
             damageLabelAligner = new Aligner(this, new Container(new Margin(0, 0.2f, 0f, 0f), MarginType.Absolute, Position.Right | Position.Top, Position.Right | Position.Top));
 
-            CoinLabel goldLabel = new CoinLabel(this, new Container(new Margin(0, 0.025f), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Bottom, relative: multiplierBar), 0.05f, Depth.Foreground, Label.TextAlignment.Left);
+            CoinLabel goldLabel = new CoinLabel(this, new Container(new Margin(0, 0.025f), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Bottom, relative: multiplierBar), 0.05f, 75, Label.TextAlignment.Left);
 
-            Label stageLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Bottom, relative: multiplierBar), 0.09f, Manager.State.Stage.ToString( ), new Color(100, 100, 100, 100), Depth.Foreground, Label.TextAlignment.Right);
+            Label stageLabel = new Label(this, new Container(new Margin(0.025f, 0.025f), MarginType.Absolute, anchor: Position.Top | Position.Right, dock: Position.Right | Position.Bottom, relative: multiplierBar), 0.09f, Manager.State.Stage.ToString( ), new Color(100, 100, 100, 100), 75, Label.TextAlignment.Right);
             Manager.State.StageChanged += (newStage) => {
                 stageLabel.Text = newStage.ToString( );
             };
 
-            targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), Depth.Center, ChallengeProgressCallback, GetTapChallenge);
+            targetArea = new TargetArea(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative, Position.Left | Position.Top), 0, ChallengeProgressCallback, GetTapChallenge);
 
-            countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), Depth.Foreground, 0.2f, 3);
+            countdown = new Countdown(this, new Container(new Margin(0f, 1f, 0.35f, 0.625f), MarginType.Relative), 10, 0.2f, 3);
 
             countdown.Finished += ( ) => {
                 Start( );
@@ -68,9 +68,7 @@ namespace Universal.UI.Screens {
             countdown.Start( );
         }
 
-        public override void Draw ( ) {
-            base.Draw( );
-
+        protected override void DrawAdditionalContent ( ) {
             foreach (Mob mob in mobs)
                 EntityRenderer.Draw(mob, map.MobPosition);
         }
@@ -145,7 +143,7 @@ namespace Universal.UI.Screens {
 
         private void Next ( ) {
             int gold = (int)(mobs[0].Value * multiplier);
-            textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Left | Position.Top, relative: goldLabelAligner), 0.075f, "+" + gold.ToString( ), Color.Gold, Depth.Foreground, Label.TextAlignment.Center), 0.075f, 0.5f));
+            textAnimations.Add(new FadeTextAnimation(new Label(this, new Container(new Margin(0, 0, map.MobPosition.Y - 0.075f, 0), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Left | Position.Top, relative: goldLabelAligner), 0.075f, "+" + gold.ToString( ), Color.Gold, 75, Label.TextAlignment.Center), 0.075f, 0.5f));
             Manager.State.Gold += gold;
 
             mobs.Insert(0, GetMob( ));
