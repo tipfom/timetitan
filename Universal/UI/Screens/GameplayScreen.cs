@@ -44,8 +44,8 @@ namespace Universal.UI.Screens {
             multiplierBar = new ProgressBar(this, new Container(new Margin(0, 1f, 0, 0.0125f), MarginType.Relative), Depth.Foreground) { Max = 10, Value = multiplier, Color = Color.Gold };
             healthLeftBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.3f, 0.05f), MarginType.Relative), Depth.Foreground) { Max = 1, Value = 1, Color = new Color(255, 20, 20, 255) };
 
-            goldLabelAligner = new Aligner(this, new Container(new Margin(0.1f, 0f, 0f, 0f), MarginType.Absolute, Position.Left | Position.Top, Position.Left | Position.Top));
-            damageLabelAligner = new Aligner(this, new Container(new Margin(0, 0.1f, 0f, 0f), MarginType.Absolute, Position.Right | Position.Top, Position.Right | Position.Top));
+            goldLabelAligner = new Aligner(this, new Container(new Margin(0.2f, 0f, 0f, 0f), MarginType.Absolute, Position.Left | Position.Top, Position.Left | Position.Top));
+            damageLabelAligner = new Aligner(this, new Container(new Margin(0, 0.2f, 0f, 0f), MarginType.Absolute, Position.Right | Position.Top, Position.Right | Position.Top));
 
             CoinLabel goldLabel = new CoinLabel(this, new Container(new Margin(0, 0.025f), MarginType.Absolute, anchor: Position.Center | Position.Top, dock: Position.Center | Position.Bottom, relative: multiplierBar), 0.05f, Depth.Foreground, Label.TextAlignment.Left);
 
@@ -85,6 +85,7 @@ namespace Universal.UI.Screens {
 
             for (int i = 0; i < textAnimations.Count; i++) {
                 if (textAnimations[i].Update(dt)) {
+                    textAnimations[i].Dispose( );
                     textAnimations.RemoveAt(i);
                     i--;
                 }

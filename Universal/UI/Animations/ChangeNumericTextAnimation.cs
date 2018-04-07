@@ -19,6 +19,10 @@ namespace Universal.UI.Animations {
             this.totalTime = seconds;
         }
 
+        public override void Dispose ( ) {
+            label.Dispose( );
+        }
+
         public override bool Update (DeltaTime dt) {
             progress = Mathf.Clamp01(progress + dt.Seconds / totalTime);
             label.Text = ((int)(start + (finish - start) * progress)).ToString( );
