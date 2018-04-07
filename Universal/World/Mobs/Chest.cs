@@ -5,7 +5,7 @@ using Core.Graphics;
 
 namespace Universal.World.Mobs {
     public class Chest : Mob {
-        public Chest ( ) : base(MobType.CHEST, 15, 250) {
+        public Chest (long stage) : base(MobType.CHEST, 15, 250, stage) {
         }
 
         public override IEnumerable<RenderableObject> Draw ( ) {

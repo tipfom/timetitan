@@ -35,7 +35,7 @@ namespace Universal.UI.Screens {
 
         public override void Load ( ) {
             base.Load( );
-            
+
             map = new Map(this, new Container(new Margin(0f, 1f, 0f, .3f), MarginType.Relative, Position.Left | Position.Top), -10);
 
             stageProgressBar = new ProgressBar(this, new Container(new Margin(0f, 1f, 0.9875f, 0.0125f), MarginType.Relative), 10) { Max = 5, Value = 1 };
@@ -159,9 +159,9 @@ namespace Universal.UI.Screens {
         private Mob GetMob ( ) {
             float random = Mathf.Random( );
             if (random < 0.7f) {
-                return new Octopus( );
+                return new Octopus(Manager.State.Stage);
             } else {
-                return new Chest( );
+                return new Chest(Manager.State.Stage);
             }
         }
 

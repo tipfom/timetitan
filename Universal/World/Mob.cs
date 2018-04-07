@@ -19,8 +19,8 @@ namespace Universal.World {
         public float Health;
         public float Value;
 
-        public Mob (MobType type, float health, float value) {
-            Health = health;
+        public Mob (MobType type, float baseHealth, float value, long stage) {
+            Health = baseHealth * (float)Math.Pow(1.025, stage);
             Value = value;
             Type = type;
         }
